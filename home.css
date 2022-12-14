@@ -1,0 +1,210 @@
+
+html, body {
+	height: 100%;
+	width: auto;
+}
+
+html {
+	color: #f4f4ec;
+	font-family: "Helvetica Neue", "Helvetica", sans-serif;
+	-webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+	font-size: 14px;
+}
+
+body {
+	background: #191919;
+	line-height: 1.4667;
+    margin: 0px;
+}
+
+/* --- links --- */
+
+a:link,
+a:visited {
+	color: #565553;
+	text-decoration: none;
+	transition: background-color .15s linear, color .15s linear;
+}
+
+a:hover { 
+    color: #3c3c3b; 
+}
+
+/* -- content --- */
+
+.text {
+    max-width: 40em; 
+    margin-right: 1.3em;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1.06em;
+    font-weight: 300;
+    line-height: 1.86em;
+}
+
+.container {
+	position: relative;
+	width: auto;
+}
+
+/* --- nav --- */
+
+.navigation {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	animation: fadein 1.5s;
+}
+
+.link, .linkFar, .linkDocs {
+    font-size: 4em;
+    line-height: 1em;
+    display: block;
+    -webkit-font-smoothing: antialiased;
+    -transition-delay: 0s, 0s;
+    -webkit-transition-duration: 0.15s, 0.15s;
+    -webkit-transition-property: background-color, color;
+    -webkit-transition-timing-function: linear, linear;
+    /*
+    color: rgb(86, 85, 83);
+    */
+
+    color: rgb(106, 105, 103);
+    font-family: "Helvetica Neue Bold", sans-serif;
+    font-weight: 200;
+    letter-spacing: -0.04em;
+    list-style-position: outside;
+    text-decoration: none;
+    transition-duration: 0.15s, 0.15s;
+    transition-property: background-color, color;
+    transition-timing-function: linear, linear;
+}
+
+/*
+.link a, .linkFar a, .linkDocs a {
+    color: rgb(86, 85, 83);
+}
+*/
+
+
+.link:hover {
+    color: #aaaa33;    
+    /*
+    color: #2277ff;    
+    color: #3c3c3b;
+    color: #a041ca;
+    color: #99c;
+    */
+}
+
+.linkFar:hover {
+    color: #2dc6ad;    
+    /*
+    color: #5e5b84;
+    color: #a77;
+    color: #3c3c3b;
+    color: #e28728;
+    color: #966;
+    */
+}
+
+.linkDocs:hover {
+    color: #aaaa33;    
+    /*
+    color: #b4b044;
+    color: #aaaa33;    
+    */    
+}
+
+/* ------------------- */
+
+@media only screen and (max-width: 885px) {
+    .link, .linkFar, .linkDocs
+	{ 
+	    font-size: 4em; 
+		line-height: 1em;
+    }
+    
+}
+
+@media only screen and (max-width: 720px) {
+    .link, .linkFar, .linkDocs
+	{ 
+	    font-size: 3.3em; 
+		line-height: 1em;
+	}
+}
+
+
+@media only screen and (max-width: 475px) { 
+    .link, .linkFar, .linkDocs
+    { 
+	    font-size: 3.3em; 
+		line-height: 1em;
+	}
+}
+
+@media only screen and (max-width: 320px) {
+    .link, .linkFar, .linkDocs
+    { 
+	    font-size: 2.13em; 
+		line-height: 1em;
+    }
+    
+    .message {
+	    font-size: 0.86em; 
+		line-height: 1em;
+    }
+}
+
+/* --- index --- */
+
+.entryLink:hover {
+    color: #ccc;
+    border-left: 1px solid #777;
+    margin-left: -1px;
+    background-color: #3a3a3a;
+}
+
+.entry {
+	animation: fadein 2s;
+    display: inline-block;
+    border-left: 1px solid #444;
+    height: 70px;
+    margin-top: -1px;
+    width: 250px;
+    margin-left: -1px;
+    font-size: 1em;
+    transition: .15s;
+}
+
+.entry:hover {
+    color: #ccc;
+    border-left: 1px solid #777;
+    margin-left: -1px;
+    background-color: #3a3a3a;
+}
+        
+.name {
+    display: block;
+    color: #fff;
+    font-family: "Helvetica Neue Bold", sans-serif;
+    font-weight: 200;
+    line-height: 15px;
+    margin-top: 15px;
+    margin-left: 15px;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.comment {
+    display: block;
+    margin-top: 0px;
+    padding-top: 0px;
+    margin-left: 15px;
+    font-family: "Helvetica Neue", sans-serif;
+    /*font-weight: 400;*/
+    color: #ccc;
+}

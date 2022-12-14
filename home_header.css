@@ -1,0 +1,159 @@
+
+.topSpace {
+    padding-top: 180px;
+}
+
+.leftSpace {
+	margin-left: 100px;
+}
+
+/*
+.pageHeader {
+}
+*/
+
+/*
+.header {
+
+}
+*/
+
+.pageHeader a {
+    color: rgb(244, 244, 236);
+}
+
+.pageHeader a:hover {
+    color: #aaa;
+}
+
+.pageTitle {
+    font-family: "Helvetica Neue Bold", sans-serif;
+    font-weight: 200;
+    text-transform: lowercase;
+    display: block;
+    font-size: 5em;
+    line-height: 1em;
+    letter-spacing: -2px;
+    width: fit-content;
+    padding-right: 0.1em;
+}
+
+.pageTitle a {
+    font-family: inherit;
+    text-transform: inherit;
+    font-weight: inherit;
+}
+
+.pageSubtitle {
+	animation: fadein 1s;
+    font-family: "Helvetica Neue Bold", sans-serif;
+    font-weight: 200;
+    color: rgb(244, 244, 236);
+    
+    font-size: 1em;
+    line-height: 1em;
+    
+    display: block;
+    margin-top: 0.2em;
+    margin-bottom: 1.5em;
+}
+
+/*
+.pageSubtitle::before {
+}
+*/
+
+@media only screen and (max-width: 720px) {
+	.pageTitle {
+		font-size: 4em;
+	}
+	
+	.pageSubtitle {
+		font-size: 1em;
+	    line-height: 1em;   
+        margin-top: 0.6em;
+	}
+	
+	.topSpace { 
+	    padding-top: 3.3em;
+	}
+
+    .leftSpace {
+	    margin-left: 3.3em; 
+    }
+
+    .message {
+        font-size: 1em;
+    }
+}
+
+@media only screen and (max-width: 475px) {
+	.pageTitle {
+		font-size: 3.3em;
+		line-height: 30px;
+	}
+	
+	.pageSubtitle {
+		font-size: 1em;
+	    line-height: 1em;
+	}
+	
+    .topSpace {
+        padding-top: 1.6em;
+    }
+    
+    .leftSpace {
+        margin-left: 2em;
+    }
+
+    .message {
+        font-size: 0.7em;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+	.pageTitle {
+	    font-size: 2.1em; 
+		line-height: 1em;
+	}
+	
+	.pageSubtitle {
+	    font-size: 1em; 
+	    line-height: 1em;
+	}
+	
+    .topSpace {
+        padding-top: 2em;
+    }
+    
+    .leftSpace {
+        margin-left: 1.3em;
+    }
+
+    .message {
+        font-size: 0.5em;
+    }
+}
+
+/* --- fade in --- */
+
+            
+@keyframes fadein {
+    0% {
+        opacity:0;
+    }
+    100% {
+        opacity:1;
+    }
+}   
+
+            
+@keyframes fadeout {
+    0% {
+        opacity:1;
+    }
+    100% {
+        opacity:0;
+    }
+}              
+   

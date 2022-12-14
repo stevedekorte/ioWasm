@@ -1,0 +1,107 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Run local node HTTPS server",
+            "type": "shell",
+            "command": "node",
+            "args": [
+                "local-web-server/main.js"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "_runner": "terminal",
+                "isBackground": "false",
+            },
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "clear": false,
+                "close": false,
+            },
+            "problemMatcher": [],
+        },
+
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "/bin/zsh",
+            "args": [
+                "./_compile.sh"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "_runner": "terminal",
+                "isBackground": "false",
+            },
+            "presentation": {
+                "panel": "shared",
+                "clear": false,
+                "close": true,
+            },
+            "problemMatcher": []
+        },
+
+        {
+            "label": "Build api example",
+            "type": "shell",
+            "command": "/bin/zsh",
+            "args": [
+                "./api_example.sh"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "_runner": "terminal",
+                "isBackground": "false",
+            },
+            "presentation": {
+                "panel": "shared",
+                "clear": false,
+                "close": true,
+            },
+            "problemMatcher": []
+        }
+        /*
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": "/bin/zsh",
+            "args": [
+                "./_emcc_build.sh"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/io-master",
+                "_runner": "terminal",
+                "isBackground": "false",
+            },
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared",
+                "clear": true,
+                "close": true,
+            },
+            "problemMatcher": []
+        }
+        */
+
+        /*
+
+        {
+            "label": "emrun",
+            "type": "shell",
+            "command": "emrun",
+            "args": [
+                "${workspaceFolder}/io-master/tools/iovm.html"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "_runner": "terminal",
+                "isBackground": "false",
+            }
+        }
+        */
+
+    ]
+}

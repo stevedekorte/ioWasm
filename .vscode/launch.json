@@ -1,0 +1,68 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    //
+    
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "launch local HTTP only",
+            "url": "http://localhost:8000/index.html",
+            "webRoot": "${workspaceFolder}",
+            //"runtimeArgs": [ "--disable-web-security" ],
+            "enableContentValidation": false,
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+                "/Users/steve/_projects/sites/ioWASM/": "${workspaceRoot}/"     
+            }
+        },
+
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "build & launch local HTTP",
+            "url": "http://localhost:8000/index.html",
+            "webRoot": "${workspaceFolder}",
+            //"runtimeArgs": [ "--disable-web-security" ],
+            "preLaunchTask": "Build",
+            "enableContentValidation": false,
+            "sourceMaps": true,
+            //"sourceRoot":  "${workspaceFolder}",
+            "sourceMapPathOverrides": {
+                "/Users/steve/_projects/sites/ioWASM/": "${workspaceRoot}/"     
+            }
+        },
+
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "api example local HTTP",
+            "url": "http://localhost:8000/api_example.html",
+            "webRoot": "${workspaceFolder}",
+            "runtimeArgs": [
+                "--disable-web-security"
+            ],
+            "preLaunchTask": "Build api example",
+            "enableContentValidation": false,
+            "sourceMaps": true,
+      //      "sourceRoot":  "${workspaceFolder}/io-master"
+
+            "sourceMapPathOverrides": {
+                "/Users/steve/_projects/sites/ioWASM/": "${workspaceRoot}/"     
+            }
+        }
+    /*
+        {
+            "name": "Launch emrun",
+            "type": "shell",
+            "request": "launch",
+            "command": "emrun "
+        }
+    */
+
+    ]
+}
