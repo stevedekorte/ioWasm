@@ -1,6 +1,7 @@
 {
     "cmake.configureOnOpen": true,
     "files.associations": {
-        "assert.h": "c"
+        "assert.h": "c",
+        "random": "c"
     }
 }

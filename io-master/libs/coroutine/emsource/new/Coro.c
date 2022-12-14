@@ -63,22 +63,11 @@ typedef struct CallbackBlock {
     CoroStartCallback *func;
 } CallbackBlock;
 
-void *io_calloc16(size_t nelem, size_t elsize) {
-    // emfiber API want 16 byte aligned memory
-    // may not be needed for other allocs here
-    
-    size_t fullSize = elsize; //+ 16;
-    void *m = (void *)memalign(16, fullSize); 
-    memset(m, 0, fullSize);
-    assert(m != NULL);
-    return m;
-}
-
 Coro *Coro_new(void) {
     Coro *self = (Coro *)io_calloc(1, sizeof(Coro));
     self->requestedStackSize = CORO_DEFAULT_STACK_SIZE;
     self->allocatedStackSize = 0;
-    self->emfiber = io_calloc16(1, sizeof(emscripten_fiber_t));
+    self->emfiber = io_calloc(1, sizeof(emscripten_fiber_t));
     self->stack = NULL;
     return self;
 }
@@ -91,7 +80,11 @@ void Coro_allocStackIfNeeded(Coro *self) {
     }
 
     if (!self->stack) {
-        self->stack = (void *)io_calloc16(1, self->requestedStackSize + 16);
+        size_t fullSize = self->requestedStackSize + 16;
+        self->stack = (void *)memalign(fullSize, 16); // emfiber API want 16 byte aligned memory
+        memset(self->stack, 0, fullSize);
+
+        //self->stack = (void *)io_calloc(1, self->requestedStackSize + 16);
         self->allocatedStackSize = self->requestedStackSize;
         // printf("Coro_%p allocating stack size %i\n", (void *)self,
         // self->requestedStackSize);
@@ -164,7 +157,7 @@ void Coro_initializeMainCoro(Coro *self) {
     emscripten_fiber_t *emfiber = self->emfiber;
     void *asyncify_stack = Coro_CurrentStackPointer();
     size_t asyncify_stack_size = 5*1024*1024; // default for emscripten?
-    self->asyncify_stack = io_calloc16(1, asyncify_stack_size);
+    self->asyncify_stack = io_calloc(1, asyncify_stack_size);
     self->allocatedStackSize = asyncify_stack_size;
 
     emscripten_fiber_init_from_current_context(emfiber, self->asyncify_stack, asyncify_stack_size);
@@ -221,7 +214,7 @@ void Coro_setup(Coro *self, void *entry_func_arg) {
     em_arg_callback_func entry_func = Coro_entryFunc;
     void *c_stack = self->stack;
     size_t c_stack_size = self->allocatedStackSize;
-    self->asyncify_stack = io_calloc16(1, self->allocatedStackSize);
+    self->asyncify_stack = io_calloc(1, self->allocatedStackSize);
     size_t asyncify_stack_size = self->allocatedStackSize;
 
     //printf("Coro %p setup emscripten_fiber_init()...\n", (void *)self);

@@ -20,8 +20,11 @@ emcc \
   io-master/addons/ReadLine/source/tiny-readline/readline.c \
   -g -gsource-map --source-map-base ./ --emit-symbol-map -o iovm.js \
   -s ASYNCIFY -s LINKABLE=1 -s EXPORT_ALL=1 -s EXPORT_ES6=1 \
-  -s ALLOW_MEMORY_GROWTH=1 --profiling-funcs -s EMULATE_FUNCTION_POINTER_CASTS -s SAFE_HEAP=1 -s MODULARIZE=1 \
-  -sENVIRONMENT=web
+  -s ALLOW_MEMORY_GROWTH=1 --profiling-funcs -s EMULATE_FUNCTION_POINTER_CASTS -s MODULARIZE=1 \
+  -s ENVIRONMENT=web 
   
+  #-s WIN32=0
+
+  # -s SAFE_HEAP=1 // causes alignment errors
   # -s ASSERTIONS=1 // causes ERROR: "Exception has occurred: TypeError: Cannot set property thisProgram of #<Object> which has only a getter"
   # -s DETERMINISTIC=1 // causes ERROR: "Exception has occurred: TypeError: Cannot set property thisProgram of #<Object> which has only a getter"

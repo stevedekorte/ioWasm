@@ -37,12 +37,14 @@ if (!window.chrome) {
 
   // --- WasmLoader protocol ---
 
-  onLoadedWasm () {
+  onWasmLoaded () {
     this.run()
   }
 
-  onStandardError (s) {
-    this.addOutput(s)
+  onStandardError () {
+    const s = Array.prototype.slice.call(arguments).join(' ');
+    this.addOutput("STDERR: " + s)
+    this.lastErrorElement().innerHTML += s
   }
 
   onStandardOutput (s) {
@@ -52,32 +54,35 @@ if (!window.chrome) {
   // --- keyboard controls ---
 
   onKeyDown (event) {
-    //console.log("down  ", event.keyCode, " meta: ", event.metaKey)
-
+    const k = event.keyCode 
+    //console.log("down  ", k)
     const returnKeyCode = 13;
     const upArrowKeyCode = 38;
     const downArrowKeyCode = 40;
     const kKeyCode = 75;
+    const uKeyCode = 85;
+    const isClearKey = k == kKeyCode || k == uKeyCode
+    const isSuper = event.metaKey || event.ctrlKey
 
-    if (event.keyCode == returnKeyCode && event.metaKey) {
+    if (k == returnKeyCode && isSuper) {
       this.onInput()
       this.clearInput()
       event.preventDefault()
     }
 
-    if (event.keyCode == upArrowKeyCode && event.metaKey) {
+    if (k == upArrowKeyCode && isSuper) {
       this.onCommandUpArrowKey(event)
     }
 
-    if (event.keyCode == downArrowKeyCode && event.metaKey) {
+    if (k == downArrowKeyCode && isSuper) {
       this.onCommandDownArrowKey(event)
     }
 
-    if (event.keyCode == kKeyCode && !event.shiftKey && event.metaKey) {
+    if (isClearKey && event.shiftKey && isSuper) {
       this.clearInput()
     }
 
-    if (event.keyCode == kKeyCode && event.shiftKey && event.metaKey) {
+    if (isClearKey && !event.shiftKey && isSuper) {
       this.clearOutput()
     }
 
@@ -169,8 +174,9 @@ if (!window.chrome) {
       window.scrollTo(0, document.body.scrollHeight);
       this.inputElement().focus()
     } catch (e) {
-      this.addOutput("" + e)
-      this.resetIoState()
+      //this.addOutput("WASM EXCEPTION:" + e)
+      this.lastErrorElement().innerHTML += "" + e
+      //this.resetIoState()
     }
   }
 
@@ -184,12 +190,30 @@ if (!window.chrome) {
 
   addResultElement (text) {    
     const e = document.createElement('div')
-    e.innerHTML = '<div class="replPair" style="animation:fadein 0.5s;">' + text + '<br><div class="resultcontainer"><div class="resultarrow">→</div><div class="result"></div></div></div><br>';
+    let s = '<div class="replPair" style="animation:fadein 0.5s;">' 
+    s += text 
+    s += '<br>'
+    s += '<div class="resultcontainer">'
+    s += '<div class="resultarrow">→</div>'
+    s += '<div class="result"></div>'
+    s += '<div class="error"></div>'
+    s += '</div>'
+    s += '</div>'
+    s += '<br>'
+    e.innerHTML = s;
     this.outputElement().appendChild(e)
   }
 
   lastResultElement () {
     const resultElements = document.getElementsByClassName("result");
+    if (resultElements.length) {
+      return resultElements[resultElements.length-1]
+    }
+    return undefined
+  }
+
+  lastErrorElement () {
+    const resultElements = document.getElementsByClassName("error");
     if (resultElements.length) {
       return resultElements[resultElements.length-1]
     }

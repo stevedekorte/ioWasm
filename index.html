@@ -4,9 +4,9 @@
 		<meta charset="utf-8">
 		<title>io language REPL</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="./home.css">
-		<link rel="stylesheet" href="./home_header.css">
-		<link rel="stylesheet" href="./fonts/Helvetica/fonts.css">
+		<link rel="stylesheet" href="/home.css">
+		<link rel="stylesheet" href="/home_header.css">
+		<link rel="stylesheet" href="/fonts/Helvetica/fonts.css">
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
 
 		<style>
@@ -34,7 +34,6 @@
       }
       
       .code {
-          white-space: pre-line;
           margin-left: 30px;
           line-height: 22px;
           margin-bottom: 40px;
@@ -73,6 +72,10 @@
           padding: 0px;
           white-space: pre-wrap;
           left-padding: 0em;
+      }
+
+      .replPair {
+        white-space: pre-wrap;
       }
       
       
@@ -213,7 +216,13 @@
       -moz-appearance: none; 
       appearance: none; 
       padding-right: 6em; 
-      background: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" stroke="#666666"/></svg>') 100% 50% no-repeat #fff; }
+      /*
+      background: url('data:image/svg+xml;utf-8,<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" stroke="#666666"/></svg>') 100% 50% no-repeat #fff; 
+    */
+    }
+
+    .error {
+      color: red;
     }
 
       </style>
@@ -263,12 +272,17 @@
     -->
     <select class="button" name="" id="SampleMenu" onchange="IoRepl.shared().onSampleMenu(this)">
       <option value='"Hello world!"'>Hello World</option>
+      <option value='System platform .. " " .. System platformVersion'>System</option>
       <option value='1 + 2'>Math</option>
-      <option value='b := 2 * 3'>Variables</option>
-      <option value='a := 2; if(a == 1, "a is one", "a is not one")'>Conditions</option>
+      <option value='b := 2 * 3
+b'>Variables</option>
+      <option value='a := 2
+if(a == 1, "a is one", "a is not one")'>Conditions</option>
       <option value='List clone append(30, 10, 5, 20)'>Lists</option>
       <option value='for(i, 1, 10, writeln(i, " "))'>For Loop</option>
       <option value='List clone append(30, 10, 5, 20) foreach(i, v, writeln(i, ": ", v))'>Foreach Loop</option>
+      <option value='Lobby'>Lobby</option>
+      <option value='Lobby Protos Core'>Core Protos</option>
     </select>
   </form>
   <br>
@@ -277,16 +291,22 @@
   <tbody> 
     <tr> 
       <td>EVAL</td>
-      <td>COMMAND RETURN</td>
+      <td>CONTROL + RETURN</td>
     </tr>
     <tr> 
       <td>CLEAR OUTPUT</td>
-      <td>COMMAND SHIFT K</td>
+      <td>CONTROL + SHIFT + U</td>
     </tr>
     <tr> 
-      <td>CLEAR INPUT</td>
-      <td>COMMAND K</td>
+      <td>HISTORY</td>
+      <td>CONTROL + ARROW UP/DOWN</td>
     </tr>
+    <!--
+    <tr> 
+      <td>CLEAR INPUT</td>
+      <td>CONTROL + U</td>
+    </tr>
+  -->
   </tbody>
   </table>
   <br><br><br>

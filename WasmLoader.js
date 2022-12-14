@@ -15,19 +15,27 @@
   setupModule () {
     const m = this.module() 
 
-    m.printErr = () => { 
+    m.printErr = (text) => { 
+      if (arguments.length > 1) {
+        text = Array.prototype.slice.call(arguments).join(' ');
+      }
+
       const d = this.delegate()
-      d.onStandardError.apply(d, arguments) 
+      d.onStandardError(text)
     }
 
-    m.print = () => { 
+    m.print = (text) => { 
+      if (arguments.length > 1) {
+        text = Array.prototype.slice.call(arguments).join(' ');
+      }
+
       const d = this.delegate()
-      d.onStandardOutput.apply(d, arguments) 
+      d.onStandardOutput(text)
     }
 
     m.onRuntimeInitialized = () => { 
       const d = this.delegate()
-      d.onLoadedWasm.apply(d, arguments) 
+      d.onWasmLoaded.apply(d, arguments) 
     }
   }
 
