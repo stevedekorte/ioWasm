@@ -1,0 +1,15 @@
+{
+  "name":         "Vorbis",
+  "version":      "0.1",
+  "description":  "Io binding for libvorbis.",
+  "author":       "Chris Double",
+  "website":      "http://iolanguage.org/",
+  "readme":       "README.md",
+  "protos":       ["Vorbis", "VorbisInfo", "VorbisComment", "VorbisDspState", "VorbisBlock" ],
+  "dependencies": {
+    "libs":     ["vorbis"],
+    "headers":  ["vorbis/codec.h"],
+    "protos":   [],
+    "packages": ["https://github.com/IoLanguage/Ogg.git"]
+  }
+}

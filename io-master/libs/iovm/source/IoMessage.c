@@ -1136,9 +1136,13 @@ IoSymbol *IoMessage_name(IoMessage *self)
 }
 */
 
-IoSymbol *IoMessage_rawLabel(IoMessage *self) { return DATA(self)->label; }
+IoSymbol *IoMessage_rawLabel(IoMessage *self) { 
+    return DATA(self)->label; 
+}
 
-List *IoMessage_rawArgs(IoMessage *self) { return DATA(self)->args; }
+List *IoMessage_rawArgs(IoMessage *self) { 
+    return DATA(self)->args; 
+}
 
 IoMessage *IoMessage_rawArgAt_(IoMessage *self, int n) {
     IoMessage *result = List_at_(DATA(self)->args, n);

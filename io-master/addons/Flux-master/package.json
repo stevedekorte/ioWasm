@@ -1,0 +1,15 @@
+{
+  "name":         "Flux",
+  "version":      "0.1",
+  "description":  "GUI library",
+  "author":       "Steve Dekorte",
+  "website":      "http://iolanguage.org/",
+  "readme":       "README.md",
+  "protos":       ["Flux"],
+  "dependencies": {
+    "libs":     [],
+    "headers":  [],
+    "protos":   [],
+    "packages": ["https://github.com/IoLanguage/OpenGL.git"]
+  }
+}

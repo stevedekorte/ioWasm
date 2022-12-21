@@ -60,6 +60,11 @@ if (!String.prototype.capitalized) {
 
         getGlobalThis()[this.type()] = this
 
+        if (this.prototype.hasOwnProperty("initPrototypeSlots")) {
+            // each class inits it's own prototype, so make sure we only call our own initPrototypeSlots()
+            this.prototype.initPrototypeSlots()
+        }
+        
         if (this.prototype.hasOwnProperty("initPrototype")) {
             // each class inits it's own prototype, so make sure we only call our own initPrototype()
             //this.prototype.initPrototype.apply(this.prototype)
@@ -210,6 +215,8 @@ Object.defineSlot(Array.prototype, "shallowEquals",
         return false
     }
 );
+
+window.ProtoClass = Base;
 
 /*
     // --- destroy ---

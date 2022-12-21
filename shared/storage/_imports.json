@@ -1,0 +1,6 @@
+[
+    "IndexedDBFolder.js",
+    "IndexedDBTx.js",
+    "PersistentAtomicMap.js",
+    "PersistentAsyncMap.js"
+]

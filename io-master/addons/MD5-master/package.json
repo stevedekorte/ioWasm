@@ -1,0 +1,15 @@
+{
+  "name":         "MD5",
+  "version":      "0.1",
+  "description":  "An object for calculating MD5 hashes. Each hash calculation should instantiate its own MD5 instance.",
+  "author":       "Steve Dekorte",
+  "website":      "http://iolanguage.org/",
+  "readme":       "README.md",
+  "protos":       ["MD5"],
+  "dependencies": {
+    "libs":     [],
+    "headers":  [],
+    "protos":   [],
+    "packages": []
+  }
+}

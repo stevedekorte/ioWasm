@@ -1,0 +1,15 @@
+{
+  "name":         "OpenGL",
+  "version":      "0.1",
+  "description":  "Io binding for OpenGL.",
+  "author":       "Steve Dekorte",
+  "website":      "http://iolanguage.org/",
+  "readme":       "README.md",
+  "protos":       ["OpenGL"],
+  "dependencies": {
+    "libs":     ["GL", "GLU", "glut"],
+    "headers":  ["GL/gl.h", "GL/glu.h", "GL/glut.h"],
+    "protos":   [],
+    "packages": ["https://github.com/IoLanguage/Image.git", "https://github.com/IoLanguage/Box.git", "https://github.com/IoLanguage/Font.git"]
+  }
+}

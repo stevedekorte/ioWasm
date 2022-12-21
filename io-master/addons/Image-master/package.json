@@ -1,0 +1,15 @@
+{
+  "name":         "Image",
+  "version":      "0.1",
+  "description":  "The Image object can read and draw images and provide the image data as a buffer.",
+  "author":       "Steve Dekorte",
+  "website":      "http://iolanguage.org/",
+  "readme":       "README.md",
+  "protos":       ["Image"],
+  "dependencies": {
+    "libs":     ["z", "png", "tiff", "jpeg"],
+    "headers":  ["png.h", "jpeglib.h", "tiff.h"],
+    "protos":   [],
+    "packages": ["https://github.com/IoLanguage/Cairo.git"]
+  }
+}

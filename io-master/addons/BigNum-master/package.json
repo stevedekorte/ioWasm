@@ -1,0 +1,15 @@
+{
+  "name":         "BigNum",
+  "version":      "0.1",
+  "description":  "A wrapper for GNU MP Bignum (arbitrary precision math) library.",
+  "author":       "",
+  "website":      "http://iolanguage.org",
+  "readme":       "README.md",
+  "protos":       ["BigNum"],
+  "dependencies": {
+    "libs":     ["gmp"],
+    "headers":  ["gmp.h"],
+    "protos":   [],
+    "packages": []
+  }
+}

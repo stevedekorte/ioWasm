@@ -55,33 +55,8 @@
 #define CORO_API
 #endif
 
-// Pick which coro implementation to use
-// The make file can set -DUSE_FIBERS, -DUSE_UCONTEXT or -DUSE_SETJMP to force
-// this choice.
-#if !defined(USE_FIBERS) && !defined(USE_UCONTEXT) && !defined(USE_SETJMP)
+#define CORO_IMPLEMENTATION "emscripten"
 
-#if defined(WIN32) && defined(HAS_FIBERS)
-#define USE_FIBERS
-#elif defined(HAS_UCONTEXT)
-//#elif defined(HAS_UCONTEXT) && !defined(__x86_64__)
-#if !defined(USE_UCONTEXT)
-#define USE_UCONTEXT
-#endif
-#else
-#define USE_SETJMP
-#endif
-
-#endif
-
-#if defined(USE_FIBERS)
-#define CORO_IMPLEMENTATION "fibers"
-#elif defined(USE_UCONTEXT)
-#include <sys/ucontext.h>
-#define CORO_IMPLEMENTATION "ucontext"
-#elif defined(USE_SETJMP)
-#include <setjmp.h>
-#define CORO_IMPLEMENTATION "setjmp"
-#endif
 
 #ifdef __cplusplus
 extern "C" {

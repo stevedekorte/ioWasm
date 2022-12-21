@@ -1,0 +1,15 @@
+{
+  "name":         "Zlib",
+  "version":      "0.1",
+  "description":  "The Zlib object can be used to compress and uncompress data using the zlib lossless data compression algorithm.",
+  "author":       "Steve Dekorte",
+  "website":      "http://iolanguage.org/",
+  "readme":       "README.md",
+  "protos":       ["Zlib", "ZlibEncoder", "ZlibDecoder"],
+  "dependencies": {
+    "libs":     ["z"],
+    "headers":  ["zlib.h"],
+    "protos":   [],
+    "packages": []
+  }
+}

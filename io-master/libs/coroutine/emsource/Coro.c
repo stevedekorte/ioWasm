@@ -183,7 +183,6 @@ void Coro_startCoro_(Coro *self, Coro *other, void *context, CoroStartCallback *
     Coro_switchTo_(self, other);
 }
 
-
 void Coro_entryFunc(void *arg) {
     CallbackBlock *block = (CallbackBlock *)arg;
     (block->func)(block->context);

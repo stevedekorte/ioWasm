@@ -91,16 +91,12 @@ IoMessage *IoMessage_newFromText_labelSymbol_(void *state, const char *text,
 
 IoMessage *IoMessage_newParse(void *state, IoLexer *lexer) {
     if (IoLexer_errorToken(lexer)) {
-        IoMessage *m;
-        IoSymbol *errorString;
-
         // Maybe the nil message could be used here. Or even a NULL.
         IoSymbol *error = IoState_symbolWithCString_(state, "Error");
-        m = IoMessage_newWithName_returnsValue_(state, error, error);
-        errorString = IoState_symbolWithCString_(
+        IoMessage *m = IoMessage_newWithName_returnsValue_(state, error, error);
+        IoSymbol *errorString = IoState_symbolWithCString_(
             (IoState *)state, IoLexer_errorDescription(lexer));
-        IoLexer_free(
-            lexer); // hack for now - the caller should be responsible for this
+        IoLexer_free(lexer); // hack for now - the caller should be responsible for this
         IoState_error_(state, m, "compile error: %s", CSTRING(errorString));
     }
 

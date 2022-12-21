@@ -1,0 +1,15 @@
+{
+  "name":         "Blowfish",
+  "version":      "0.1",
+  "description":  " The Blowfish object can be used to do encryption and decryption using the Blowfish keyed, symmetric block cipher.",
+  "author":       "Steve Dekorte",
+  "website":      "http://iolanguage.org",
+  "readme":       "README.md",
+  "protos":       ["Blowfish"],
+  "dependencies": {
+    "libs":     [],
+    "headers":  [],
+    "protos":   [],
+    "packages": []
+  }
+}

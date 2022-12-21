@@ -87,7 +87,7 @@
       }
 
       .help {
-        font-size: 0.9em;
+        font-size: 1em;
         font-weight: normal;
         border: #444 0px solid; 
         background-color: transparent; 
@@ -118,7 +118,7 @@
       }
 
       td {
-        font-size: 0.9em;
+        font-size: 1em;
         line-height: 1em;
         font-weight: normal;
         border: #444 0px solid; 
@@ -133,6 +133,7 @@
       }
 
       .button {
+        font-size: 1em;
         font-weight: normal;
         border: #444 1px solid; 
         background-color: transparent; 
@@ -173,6 +174,7 @@
         height: fit-content;
         spellcheck: off;
         overflow: hidden;
+        /*transition: opacity 0.5s;*/
     }
 
     .output {
@@ -260,17 +262,16 @@
 <div class=section style="width: 100%; border: none; color: #666;">
  <!-- INPUT -->
 </div>
-  <form>
-    <div class="inputsection">
+    <div id="inputsection" class="inputsection">
       <textarea class="input" id="input" spellcheck="false"></textarea>
     </div>
     <br>
-    <input class="button" type="button" value="EVAL" onclick="IoRepl.shared().onInput()" title="CMD+RETURN">
-    <!--
-    <input class="button" type="button" value="CLEAR OUT" onclick="IoRepl.shared().clearOutput()" title="CMD+SHIFT+K">
-    <input class="button" type="button" value="CLEAR IN" onclick="IoRepl.shared().clearInput()" title="CMD+K">
-    -->
-    <select class="button" name="" id="SampleMenu" onchange="IoRepl.shared().onSampleMenu(this)">
+    <br>
+  
+    <div class="helpsection">
+      <div style=""margin-bottom:0.5em;">
+    <input class="button" type="button" value="EVAL" onclick="Repl.shared().onInput()">
+    <select class="button" name="" id="SampleMenu" onchange="Repl.shared().onSampleMenu(this)">
       <option value='"Hello world!"'>Hello World</option>
       <option value='System platform .. " " .. System platformVersion'>System</option>
       <option value='1 + 2'>Math</option>
@@ -283,10 +284,9 @@ if(a == 1, "a is one", "a is not one")'>Conditions</option>
       <option value='List clone append(30, 10, 5, 20) foreach(i, v, writeln(i, ": ", v))'>Foreach Loop</option>
       <option value='Lobby'>Lobby</option>
       <option value='Lobby Protos Core'>Core Protos</option>
+      <option value='System sleep(2)'>Sleep</option>
     </select>
-  </form>
-  <br>
-
+  </div>
   <table cellpadding="0" cellspacing="0" width="fit-content" style="border: 1px solid #444;" rules="none">
   <tbody> 
     <tr> 
@@ -294,21 +294,20 @@ if(a == 1, "a is one", "a is not one")'>Conditions</option>
       <td>CONTROL + RETURN</td>
     </tr>
     <tr> 
-      <td>CLEAR OUTPUT</td>
+      <td>CLEAR</td>
       <td>CONTROL + SHIFT + U</td>
     </tr>
     <tr> 
       <td>HISTORY</td>
       <td>CONTROL + ARROW UP/DOWN</td>
     </tr>
-    <!--
     <tr> 
-      <td>CLEAR INPUT</td>
-      <td>CONTROL + U</td>
+      <td>TOGGLE HELP</td>
+      <td>CONTROL + H</td>
     </tr>
-  -->
   </tbody>
   </table>
+  </div>
   <br><br><br>
   </div>
 </div>
