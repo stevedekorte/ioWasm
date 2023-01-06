@@ -100,16 +100,6 @@ int CollectorMarker_colorSetIsEmpty(CollectorMarker *self);
 
 #include "CollectorMarker_inline.h"
 
-// previously inlined 
-
-COLLECTOR_API void CollectorMarker_clear(CollectorMarker *self);
-COLLECTOR_API void CollectorMarker_insertAfter_(CollectorMarker *self, CollectorMarker *other);
-COLLECTOR_API void CollectorMarker_insertBefore_(CollectorMarker *self, CollectorMarker *other);
-COLLECTOR_API void CollectorMarker_remove(CollectorMarker *self);
-COLLECTOR_API void CollectorMarker_removeAndInsertAfter_(CollectorMarker *self, CollectorMarker *other);
-COLLECTOR_API void CollectorMarker_removeIfNeededAndInsertAfter_(CollectorMarker *self, CollectorMarker *other);
-COLLECTOR_API int CollectorMarker_isEmpty(CollectorMarker *self);
-
 #ifdef __cplusplus
 }
 #endif

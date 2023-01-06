@@ -41,9 +41,6 @@
 typedef struct IoObjectData IoObjectData;
 #endif
 
-#define IOMESSAGEDATA(self) ((IoMessageData *)IoObject_dataPointer(self))
-
-/*
 IOINLINE IoObject *IOTRUE(IoObject *self) { return IOSTATE->ioTrue; }
 
 IOINLINE int ISTRUE(IoObject *self) {
@@ -168,15 +165,17 @@ IOINLINE IoObject *IoMessage_locals_quickValueArgAt_(IoMessage *self,
 IOINLINE IoObject *IoMessage_locals_valueArgAt_(IoMessage *self,
                                                 IoObject *locals, int n) {
     return IoMessage_locals_quickValueArgAt_(self, locals, n);
-//  List *args = IOMESSAGEDATA(self)->args;
-//  IoMessage *m = (IoMessage *)List_at_(args, n);
-//
-//    if (m)
-//    {
-//            return IoMessage_locals_performOn_(m, locals, locals);
-//    }
-//
-//   return IOSTATE->ioNil;
+    /*
+    List *args = IOMESSAGEDATA(self)->args;
+    IoMessage *m = (IoMessage *)List_at_(args, n);
+
+    if (m)
+    {
+            return IoMessage_locals_performOn_(m, locals, locals);
+    }
+
+    return IOSTATE->ioNil;
+    */
 }
 
 IOINLINE IoObject *IoMessage_locals_firstStringArg(IoMessage *self,
@@ -284,7 +283,6 @@ IOINLINE int IoState_stopStatusNumber(IoState *self, IoObject *obj) {
 
     return MESSAGE_STOP_STATUS_NORMAL;
 }
-*/
 
 #undef IO_IN_C_FILE
 #endif

@@ -7,11 +7,6 @@
 #include "Common_inline.h"
 #ifdef IO_DECLARE_INLINES
 
-#ifdef COLLECTOR_USE_NONINCREMENTAL_MARK_SWEEP
-#define Collector_value_addingRefTo_(self, v, ref)
-#endif
-
-/*
 // inspecting markers -------------------
 
 IOINLINE int Collector_markerIsWhite_(Collector *self, CollectorMarker *m) {
@@ -55,7 +50,17 @@ IOINLINE void Collector_makeGrayIfWhite_(Collector *self, void *v) {
     }
 }
 
-#ifndef COLLECTOR_USE_NONINCREMENTAL_MARK_SWEEP
+/*
+IOINLINE void Collector_makeFreed_(Collector *self, void *v)
+{
+        CollectorMarker_removeAndInsertAfter_(v, self->freed);
+}
+*/
+#ifdef COLLECTOR_USE_NONINCREMENTAL_MARK_SWEEP
+
+#define Collector_value_addingRefTo_(self, v, ref)
+
+#else
 
 IOINLINE void *Collector_value_addingRefTo_(Collector *self, void *v,
                                             void *ref) {
@@ -71,7 +76,6 @@ IOINLINE void *Collector_value_addingRefTo_(Collector *self, void *v,
 }
 
 #endif
-*/
 
 #undef IO_IN_C_FILE
 #endif

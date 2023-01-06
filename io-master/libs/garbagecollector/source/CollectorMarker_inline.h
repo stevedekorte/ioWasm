@@ -7,13 +7,13 @@
 #include "Common_inline.h"
 #ifdef IO_DECLARE_INLINES
 
-/*
 IOINLINE void CollectorMarker_clear(CollectorMarker *self) {
     self->prev = NULL;
     self->next = NULL;
 }
 
-IOINLINE void CollectorMarker_insertAfter_(CollectorMarker *self, CollectorMarker *other) {
+IOINLINE void CollectorMarker_insertAfter_(CollectorMarker *self,
+                                           CollectorMarker *other) {
     self->color = other->color;
 
     self->prev = other;
@@ -23,7 +23,9 @@ IOINLINE void CollectorMarker_insertAfter_(CollectorMarker *self, CollectorMarke
     other->next = self;
 }
 
-IOINLINE void CollectorMarker_insertBefore_(CollectorMarker *self, CollectorMarker *other)
+/*
+IOINLINE void CollectorMarker_insertBefore_(CollectorMarker *self,
+CollectorMarker *other)
 {
         self->color = other->color;
 
@@ -33,6 +35,7 @@ IOINLINE void CollectorMarker_insertBefore_(CollectorMarker *self, CollectorMark
         other->prev->next = self;
         other->prev = self;
 }
+*/
 
 IOINLINE void CollectorMarker_remove(CollectorMarker *self) {
     self->prev->next = self->next;
@@ -41,12 +44,24 @@ IOINLINE void CollectorMarker_remove(CollectorMarker *self) {
     // self->prev = NULL; // temp
 }
 
-IOINLINE void CollectorMarker_removeAndInsertAfter_(CollectorMarker *self, CollectorMarker *other) {
+IOINLINE void CollectorMarker_removeAndInsertAfter_(CollectorMarker *self,
+                                                    CollectorMarker *other) {
     CollectorMarker_remove(self);
     CollectorMarker_insertAfter_(self, other);
 }
 
-IOINLINE void CollectorMarker_removeIfNeededAndInsertAfter_(CollectorMarker *self, CollectorMarker *other) {
+/*
+IOINLINE void CollectorMarker_removeAndInsertBefore_(CollectorMarker *self,
+CollectorMarker *other)
+{
+        CollectorMarker_remove(self);
+        CollectorMarker_insertBefore_(self, other);
+}
+*/
+
+IOINLINE void
+CollectorMarker_removeIfNeededAndInsertAfter_(CollectorMarker *self,
+                                              CollectorMarker *other) {
     if (self->prev) {
         CollectorMarker_remove(self);
     }
@@ -57,7 +72,6 @@ IOINLINE void CollectorMarker_removeIfNeededAndInsertAfter_(CollectorMarker *sel
 IOINLINE int CollectorMarker_isEmpty(CollectorMarker *self) {
     return (self->color != self->next->color);
 }
-*/
 
 #undef IO_IN_C_FILE
 #endif

@@ -46,8 +46,6 @@ static union {
 
 typedef IoObject IoNumber;
 
-IOVM_API double double_log2(double n);
-
 IOVM_API IoNumber *IoNumber_proto(void *state);
 IOVM_API IoNumber *IoNumber_rawClone(IoNumber *self);
 IOVM_API IoNumber *IoNumber_newWithDouble_(void *state, double n);

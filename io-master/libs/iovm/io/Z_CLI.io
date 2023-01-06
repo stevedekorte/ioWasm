@@ -37,9 +37,9 @@ CLI := Object clone do(
 
         # Trying to use GNU ReadLine as the default line reader, falling
         # back to EditLine, if the attempt failed.
-        #try(reader := ReadLine) catch(Exception,
-        #    try(reader := EditLine)
-        #)
+        try(reader := ReadLine) catch(Exception,
+            try(reader := EditLine)
+        )
         reader
     )
 

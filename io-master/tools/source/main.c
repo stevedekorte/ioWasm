@@ -33,7 +33,6 @@ int main(int argc, const char *argv[])
 	size_t sweepCount;
 #endif
 
-	printf("starting io\n");
 
 	self = IoState_new();
 #ifdef IOBINDINGS
@@ -44,8 +43,6 @@ int main(int argc, const char *argv[])
 	//IoState_doCString_(self, "some test code...");
 	IoState_runCLI(self);
 	exitResult = IoState_exitResult(self);
-
-	printf("exiting with result: %i\n", exitResult);
 
 #ifdef IO_SHOW_STATS
 	maxAllocatedBytes = io_maxAllocatedBytes();

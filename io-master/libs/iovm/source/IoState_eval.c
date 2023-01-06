@@ -7,7 +7,8 @@
 #include <time.h>
 #include "PortableGettimeofday.h"
 
-IoObject *IoState_tryToPerform(IoState *self, IoObject *target, IoObject *locals, IoMessage *m) {
+IoObject *IoState_tryToPerform(IoState *self, IoObject *target,
+                               IoObject *locals, IoMessage *m) {
     IoCoroutine *tryCoro = IoCoroutine_newWithTry(self, target, locals, m);
 
     if (IoCoroutine_rawException(tryCoro) != self->ioNil) {
@@ -32,6 +33,7 @@ void IoState_resetSandboxCounts(IoState *self) {
 
     // Calculate the end of time
     self->endTime = start + self->timeLimit;
+
     self->messageCount = self->messageCountLimit;
 }
 
@@ -39,10 +41,49 @@ IoObject *IoState_on_doCString_withLabel_(IoState *self, IoObject *target,
                                           const char *s, const char *label) {
     IoObject *result;
 
-    assert(s != NULL);
-    assert(label != NULL);
+    IoState_pushRetainPool(self);
 
-    //printf("running IoState_on_doCString_withLabel_(%p, %p, '%s', '%s')...\n", self, target, s, label);
+    {
+        IoMessage *m = IoMessage_newWithName_andCachedArg_(
+            self, SIOSYMBOL("doString"), SIOSYMBOL(s));
+
+        if (label) {
+            IoMessage_addCachedArg_(m, SIOSYMBOL(label));
+        }
+
+        IoState_zeroSandboxCounts(self);
+        result = IoState_tryToPerform(self, target, target, m);
+    }
+
+    IoState_popRetainPoolExceptFor_(self, result);
+
+    return result;
+}
+
+IoObject *IoState_doCString_(IoState *self, const char *s) {
+    return IoState_on_doCString_withLabel_(self, self->lobby, s, "IoState_doCString");
+}
+
+IoObject *IoState_doSandboxCString_(IoState *self, const char *s) {
+    IoMessage *m = IoMessage_newWithName_andCachedArg_(
+        self, SIOSYMBOL("doString"), SIOSYMBOL(s));
+    IoState_resetSandboxCounts(self);
+    return IoState_tryToPerform(self, self->lobby, self->lobby, m);
+}
+
+double IoState_endTime(IoState *self) { return self->endTime; }
+
+IoObject *IoState_doFile_(IoState *self, const char *path) {
+    IoMessage *m = IoMessage_newWithName_andCachedArg_(
+        self, SIOSYMBOL("doFile"), SIOSYMBOL(path));
+    return IoState_tryToPerform(self, self->lobby, self->lobby, m);
+}
+
+// ---
+
+void IoState_on_doCString_withLabel_andPrintResult(IoState *self, 
+        IoObject *target, const char *s, const char *label) {
+    IoObject *result;
 
     IoState_pushRetainPool(self);
 
@@ -57,28 +98,10 @@ IoObject *IoState_on_doCString_withLabel_(IoState *self, IoObject *target,
         IoState_zeroSandboxCounts(self);
 
         result = IoState_tryToPerform(self, target, target, m);
+        IoObject_print(result); // tmp emscripten test
+        fputs("\n", stdout);
+        //fflush(stdout); // tmp emscripten test
     }
 
-    IoState_popRetainPoolExceptFor_(self, result);
-
-    return result;
-}
-
-IoObject *IoState_doCString_(IoState *self, const char *s) {
-    return IoState_on_doCString_withLabel_(self, self->lobby, s, "IoState_doCString");
-}
-
-IoObject *IoState_doSandboxCString_(IoState *self, const char *s) {
-    IoMessage *m = IoMessage_newWithName_andCachedArg_(self, SIOSYMBOL("doString"), SIOSYMBOL(s));
-    IoState_resetSandboxCounts(self);
-    return IoState_tryToPerform(self, self->lobby, self->lobby, m);
-}
-
-double IoState_endTime(IoState *self) { 
-    return self->endTime; 
-}
-
-IoObject *IoState_doFile_(IoState *self, const char *path) {
-    IoMessage *m = IoMessage_newWithName_andCachedArg_(self, SIOSYMBOL("doFile"), SIOSYMBOL(path));
-    return IoState_tryToPerform(self, self->lobby, self->lobby, m);
+    IoState_popRetainPool(self);
 }

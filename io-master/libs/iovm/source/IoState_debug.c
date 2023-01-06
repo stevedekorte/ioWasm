@@ -111,7 +111,8 @@ void IoState_callUserInterruptHandler(IoState *self) {
 
     {
         IoObject *system = IoState_doCString_(self, "System");
-        IoMessage *m = IoMessage_newWithName_(self, SIOSYMBOL("userInterruptHandler"));
+        IoMessage *m =
+            IoMessage_newWithName_(self, SIOSYMBOL("userInterruptHandler"));
         IoMessage_locals_performOn_(m, system, system);
     }
 }

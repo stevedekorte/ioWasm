@@ -12,7 +12,7 @@ IO_METHOD(IoObject, for);
 // break
 
 IO_METHOD(IoObject, returnIfNonNil);
-IO_METHOD(IoObject, return);
+IO_METHOD(IoObject, return );
 IO_METHOD(IoObject, break);
 IO_METHOD(IoObject, continue);
 IO_METHOD(IoObject, stopStatus);

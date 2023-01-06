@@ -31,8 +31,6 @@ hash)
 
 // -----------------------------------
 
-/* previously inlined ------------------
-
 IOINLINE PointerHashRecord *PointerHash_record1_(PointerHash *self, void *k) {
     // the ~| 0x1 before the mask ensures an odd pos
     intptr_t kk = (intptr_t)k;
@@ -124,7 +122,6 @@ IOINLINE void PointerHash_clean(PointerHash *self) {
     memset(self->records, 0, sizeof(PointerHashRecord) * self->size);
     self->keyCount = 0;
 }
-*/
 
 // --- enumeration --------------------------------------------------
 

@@ -4,6 +4,7 @@
 (class WasmLoader extends Base {
   initPrototype () {
     this.newSlot("path", "./iovm.js")
+    this.newSlot("wasmHash", null)
     this.newSlot("module", null)
     this.newSlot("delegate", null)
   }
@@ -12,6 +13,12 @@
       super.init()
       this.setModule({})
       this.setupModule()
+  }
+
+  wasmPath () {
+    const parts = this.path().split(".")
+    parts.pop()
+    return parts.join(".") + ".wasm"
   }
 
   setupModule () {
@@ -42,9 +49,51 @@
   }
 
   load () {
-    import(this.path()).then((m) => {
+    this.loadUrl(this.path())
+    this.loadWasm()
+  }
+
+  loadUrl (url) {
+    import(url).then((m) => {
       m.default(this.module())
+    }).catch((error) => {
+      this.debugLog("error:" + error);
     })
+  }
+
+  loadWasm () {
+    fetch(this.wasmPath()).then((response) => { 
+      if (!response.ok) {
+        this.debugLog("fetch error: " + response.status)
+        throw new Error(response.status);
+      }
+      return response.arrayBuffer();
+    }).then((buffer) => {
+      //this.debugLog("loaded " + this.wasmPath() + " into ArrayBuffer of " + buffer.byteLength + " bytes")
+      this.onFetchWasmBuffer(buffer)
+    })
+  }
+
+  onFetchWasmBuffer (arrayBuffer) {
+    //this.debugLog(this.type() + " onFetchBuffer ")
+    //const s =  String.fromCharCode.apply(null, new Uint16Array(arrayBuffer));
+    const s = btoa(arrayBuffer);
+    const hash = this.hashOfString(s)
+    //this.debugLog("hash of wasm buffer: " + hash)
+    this.setWasmHash(hash)
+  }
+
+  hashOfString (s) {
+    let h = 0xdeadbeef;
+    for(let i = 0; i < s.length; i++) {
+      h = Math.imul(h ^ s.charCodeAt(i), 2654435761);
+    }
+    return (h ^ h >>> 16) >>> 0;
+  }
+
+  debugLog (s) {
+    console.log(s)
+    alert(s)
   }
 
 }.initThisClass());

@@ -7,7 +7,7 @@
 #include <math.h>
 #include <float.h>
 
-#undef IO_USE_SIMD
+#define IO_USE_SIMD 1
 
 #ifdef IO_USE_SIMD
 

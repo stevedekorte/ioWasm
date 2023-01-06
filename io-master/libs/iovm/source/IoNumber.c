@@ -20,7 +20,7 @@ A container for a double (a 64bit floating point number on most platforms).
 
 #include <ctype.h>
 #include <assert.h>
-#include <math.h>
+//#include <math.h>  
 
 #include <setjmp.h>
 #if defined(_BSD_PPC_SETJMP_H_)
@@ -37,18 +37,15 @@ A container for a double (a 64bit floating point number on most platforms).
 #include <float.h>
 #endif
 
-/*
+#ifndef __EMSCRIPTEN__
 #ifndef log2
 double log2(double n) { return log(n) / log(2); }
+#endif
 #endif
 
 #ifdef __FreeBSD__
 #define log2(x) (log(x) / M_LN2)
 #endif
-*/
-
-double double_log2(double n) { return log(n) / log(2); }
-
 
 #define DATA(self) CNUMBER(self)
 
@@ -307,13 +304,11 @@ void IoNumber_print(IoNumber *self) {
 
 // -----------------------------------------------------------
 
-/*
 #ifdef _WIN32
 #include <winsock2.h>
 #else
 #include <arpa/inet.h>
 #endif
-*/
 
 // IO_METHOD(IoNumber, htonl)
 //{
@@ -338,7 +333,6 @@ void IoNumber_print(IoNumber *self) {
 //	IoObject_setDataUint32_(num, ntohl(IoObject_dataUint32(self)));
 //	return num;
 //}
-
 
 // -----------------------------------------------------------
 
@@ -676,7 +670,7 @@ IO_METHOD(IoNumber, log2) {
     Returns the base 2 logarithm of the receiver.
     */
 
-    return IONUMBER(double_log2(DATA(self)));
+    return IONUMBER(log2(DATA(self)));
 }
 
 IO_METHOD(IoNumber, log10) {

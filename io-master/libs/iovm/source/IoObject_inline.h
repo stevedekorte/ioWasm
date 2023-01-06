@@ -15,7 +15,6 @@
 #define Records_recordAt_(records, pos)                                        \
     (PHashRecord *)(records + (pos * sizeof(PHashRecord)))
 
-/*
 IOINLINE PHashRecord *PHash_record1_(PHash *self, void *k) {
     // intptr_t kk = IoSeq_rawUArray(((IoSeq *)k))->evenHash;
     intptr_t kk = ((CollectorMarker *)k)->hash1;
@@ -107,7 +106,6 @@ IOINLINE void PHash_clean(PHash *self) {
     memset(self->records, 0, sizeof(PHashRecord) * self->size);
     self->keyCount = 0;
 }
-*/
 
 // --- enumeration --------------------------------------------------
 
@@ -184,11 +182,10 @@ IOINLINE int IoObject_isBlack(IoObject *self)
 }
 */
 
-/*
-
 IOINLINE void IoObject_createSlotsIfNeeded(IoObject *self) {
     if (!IoObject_ownsSlots(self)) {
-        //printf("creating slots for %s %p\n", IoObject_tag(self)->name, (void* *)self);
+        /*printf("creating slots for %s %p\n", IoObject_tag(self)->name, (void
+         * *)self);*/
         IoObject_createSlots(self);
     }
 }
@@ -235,20 +232,23 @@ IOINLINE IoObject *IoObject_addingRef_(IoObject *self, IoObject *ref) {
 IOINLINE void IoObject_inlineSetSlot_to_(IoObject *self, IoSymbol *slotName,
                                          IoObject *value) {
     IoObject_createSlotsIfNeeded(self);
-//    if (!slotName->isSymbol)
-//    {
-//            printf("Io System Error: setSlot slotName not symbol\n");
-//            exit(1);
-//    }
+    /*
+    if (!slotName->isSymbol)
+    {
+            printf("Io System Error: setSlot slotName not symbol\n");
+            exit(1);
+    }
+    */
 
     PHash_at_put_(IoObject_slots(self), IOREF(slotName), IOREF(value));
 
     IoObject_isDirty_(self, 1);
-
-//    if(PHash_at_put_(IoObject_slots(self), IOREF(slotName), IOREF(value)))
-//    {
-//            IoObject_isDirty_(self, 1);
-//    }
+    /*
+    if(PHash_at_put_(IoObject_slots(self), IOREF(slotName), IOREF(value)))
+    {
+            IoObject_isDirty_(self, 1);
+    }
+    */
 }
 
 IOINLINE_RECURSIVE IoObject *IoObject_rawGetSlot_context_(IoObject *self,
@@ -322,14 +322,16 @@ IOINLINE_RECURSIVE IoObject *IoObject_rawGetSlot_(IoObject *self,
 }
 
 IOINLINE int IoObject_mark(IoObject *self) {
-//    if (IoObject_isLocals(self))
-//    {
-//            printf("mark %p locals\n", (void *)self);
-//    }
-//    else
-//    {
-//            printf("mark %p %s\n", (void *)self, IoObject_name(self));
-//    }
+    /*
+    if (IoObject_isLocals(self))
+    {
+            printf("mark %p locals\n", (void *)self);
+    }
+    else
+    {
+            printf("mark %p %s\n", (void *)self, IoObject_name(self));
+    }
+    */
 
     if (IoObject_ownsSlots(self)) {
         PHASH_FOREACH(
@@ -338,22 +340,22 @@ IOINLINE int IoObject_mark(IoObject *self) {
             // printf("mark slot k: %s\n", s);
             IoObject_shouldMark((IoObject *)k);
             // printf("k.\n");
-//            
-//            if(strcmp(s, "path") == 0)
-//            {
-//                    //printf("s = %s\n", s);
-//                    //printf("vp = %p\n", (void *)v);
-//
-//                    if(ISSEQ((IoObject *)v))
-//                    {
-//                            printf("%s = '%s'\n", s, CSTRING((IoSeq *)v));
-//                    }
-//                    else
-//                    {
-//                            printf("%s type = %s\n", s, IoObject_name((IoObject
-//            *)v));
-//                    }
-//            }
+            /*
+            if(strcmp(s, "path") == 0)
+            {
+                    //printf("s = %s\n", s);
+                    //printf("vp = %p\n", (void *)v);
+
+                    if(ISSEQ((IoObject *)v))
+                    {
+                            printf("%s = '%s'\n", s, CSTRING((IoSeq *)v));
+                    }
+                    else
+                    {
+                            printf("%s type = %s\n", s, IoObject_name((IoObject
+            *)v));
+                    }
+            }*/
             IoObject_shouldMark((IoObject *)v);
             // if(strcmp(s, "path") == 0)
             // printf("v.\n");
@@ -374,8 +376,6 @@ IOINLINE int IoObject_mark(IoObject *self) {
 
     return 1;
 }
-
-
 
 // IoObject *IoObject_addingRef_(IoObject *self, IoObject *ref);
 IOVM_API int IoObject_hasCloneFunc_(IoObject *self, IoTagCloneFunc *func);
@@ -406,14 +406,16 @@ IOINLINE IO_METHOD(IoObject, forward) {
     IoObject *forwardSlot =
         IoObject_rawGetSlot_context_(self, state->forwardSymbol, &context);
 
-//    if
-//    (Coro_stackSpaceAlmostGone((Coro*)IoCoroutine_cid(state->currentCoroutine)))
-//    {
-//
-//            IoState_error_(IOSTATE, m, "stack overflow in forward while sending
-//    '%s' message to a '%s' object", CSTRING(IoMessage_name(m)),
-//    IoObject_name(self));
-//    }
+    /*
+    if
+    (Coro_stackSpaceAlmostGone((Coro*)IoCoroutine_cid(state->currentCoroutine)))
+    {
+
+            IoState_error_(IOSTATE, m, "stack overflow in forward while sending
+    '%s' message to a '%s' object", CSTRING(IoMessage_name(m)),
+    IoObject_name(self));
+    }
+    */
 
     if (forwardSlot) {
         return IoObject_activate(forwardSlot, self, locals, m, context);
@@ -439,7 +441,6 @@ IOINLINE IO_METHOD(IoObject, perform) {
 
     return IoObject_forward(self, locals, m);
 }
-*/
 
 #undef IO_IN_C_FILE
 #endif

@@ -59,18 +59,6 @@ BASEKIT_API void CHash_show(CHash *self);
 BASEKIT_API void CHash_updateMask(CHash *self);
 BASEKIT_API float CHash_density(CHash *self);
 
-// previously inlined ----------------------------
-
-BASEKIT_API CHashRecord *CHash_record1_(CHash *self, void *k);
-BASEKIT_API CHashRecord *CHash_record2_(CHash *self, void *k);
-BASEKIT_API void *CHash_at_(CHash *self, void *k);
-BASEKIT_API size_t CHash_count(CHash *self);
-BASEKIT_API int CHashKey_hasKey_(CHash *self, void *key);
-BASEKIT_API int CHash_at_put_(CHash *self, void *k, void *v);
-BASEKIT_API void CHash_shrinkIfNeeded(CHash *self);
-BASEKIT_API void CHashRecord_swapWith_(CHashRecord *self, CHashRecord *other);
-BASEKIT_API void CHash_clean(CHash *self);
-
 #include "CHash_inline.h"
 
 #ifdef __cplusplus

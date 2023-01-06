@@ -76,23 +76,6 @@ BASEKIT_API List *Stack_asList(const Stack *self);
 
 #include "Stack_inline.h"
 
-// previously inlined ----------------
-
-BASEKIT_API void Stack_do_(const Stack *self, StackDoCallback *callback);
-BASEKIT_API void Stack_doUntilMark_(const Stack *self, StackDoCallback *callback);
-BASEKIT_API void Stack_clear(Stack *self);
-BASEKIT_API size_t Stack_totalSize(const Stack *self);
-BASEKIT_API int Stack_count(const Stack *self);
-BASEKIT_API void Stack_push_(Stack *self, void *item);
-BASEKIT_API void Stack_pushMark(Stack *self);
-BASEKIT_API intptr_t Stack_pushMarkPoint(Stack *self);
-BASEKIT_API void *Stack_pop(Stack *self);
-BASEKIT_API void Stack_popMark(Stack *self);
-BASEKIT_API int Stack_popMarkPoint_(Stack *self, intptr_t mark);
-BASEKIT_API void Stack_clearTop(Stack *self);
-BASEKIT_API void *Stack_top(const Stack *self);
-BASEKIT_API void *Stack_at_(const Stack *self, int i);
-
 #ifdef __cplusplus
 }
 #endif

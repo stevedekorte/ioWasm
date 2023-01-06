@@ -7,7 +7,6 @@
 #include "Common_inline.h"
 #ifdef IO_DECLARE_INLINES
 
-/*
 // state
 
 IOINLINE void IoTag_state_(IoTag *self, void *state) { self->state = state; }
@@ -128,7 +127,6 @@ IOINLINE void IoTag_performFunc_(IoTag *self, IoTagPerformFunc *func) {
 IOINLINE IoTagPerformFunc *IoTag_performFunc(IoTag *self) {
     return self->performFunc;
 }
-*/
 
 #undef IO_IN_C_FILE
 #endif

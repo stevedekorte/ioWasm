@@ -44,6 +44,10 @@ IO_METHOD(IoObject, symbols);
 IO_METHOD(IoObject, setLobby);
 IO_METHOD(IoObject, thisProcessPid);
 
+#if defined(__EMSCRIPTEN__)
+IO_METHOD(IoObject, sendIoToJsMessage);
+#endif
+
 #ifdef __cplusplus
 }
 #endif

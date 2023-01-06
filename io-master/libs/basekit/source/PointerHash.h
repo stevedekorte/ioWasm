@@ -49,18 +49,6 @@ BASEKIT_API void PointerHash_updateMask(PointerHash *self);
 #define PointerHash_cleanSlots(self)
 #define PointerHash_hasDirtyKey_(self, k) 0
 
-// previously inlined -------------------
-
-PointerHashRecord *PointerHash_record1_(PointerHash *self, void *k);
-PointerHashRecord *PointerHash_record2_(PointerHash *self, void *k);
-void *PointerHash_at_(PointerHash *self, void *k);
-size_t PointerHash_count(PointerHash *self);
-int PointerHashKey_hasKey_(PointerHash *self, void *key);
-void PointerHash_at_put_(PointerHash *self, void *k, void *v);
-void PointerHash_shrinkIfNeeded(PointerHash *self);
-void PointerHashRecord_swapWith_(PointerHashRecord *self, PointerHashRecord *other);
-void PointerHash_clean(PointerHash *self);
-
 #ifdef __cplusplus
 }
 #endif

@@ -12,14 +12,17 @@ emcc \
   io-master/libs/garbagecollector/source/*.c \
   -I io-master/libs/iovm/source/ \
   io-master/libs/iovm/source/*.c \
-  -I io-master/deps/parson \
-  io-master/deps/parson/parson.c \
+  -I io-master/libs/iovm/source/parson \
+  io-master/libs/iovm/source/parson/*.c \
+  -I io-master/addons/ReadLine/source \
+  io-master/addons/ReadLine/source/*.c \
+  -I io-master/addons/ReadLine/source/tiny-readline \
+  io-master/addons/ReadLine/source/tiny-readline/readline.c \
   -g -gsource-map --source-map-base ./ --emit-symbol-map -o iovm.js \
   -s ASYNCIFY -s LINKABLE=1 -s EXPORT_ALL=1 -s EXPORT_ES6=1 \
   -s ALLOW_MEMORY_GROWTH=1 --profiling-funcs -s EMULATE_FUNCTION_POINTER_CASTS -s MODULARIZE=1 \
   -s ENVIRONMENT=web \
-  -s FORCE_FILESYSTEM \
-  -s WASM_MEM_MAX=256MB
+  -s FORCE_FILESYSTEM
   
   #-s WIN32=0
 

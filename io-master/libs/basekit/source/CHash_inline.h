@@ -14,7 +14,6 @@
 #define CRecords_recordAt_(records, pos)                                       \
     (CHashRecord *)(records + (pos * sizeof(CHashRecord)))
 
-/*
 IOINLINE CHashRecord *CHash_record1_(CHash *self, void *k) {
     // the ~ | 0x1 before the mask ensures an even pos
     size_t pos = self->hash1(k) & self->mask;
@@ -108,7 +107,6 @@ IOINLINE void CHash_clean(CHash *self) {
     memset(self->records, 0, sizeof(CHashRecord) * self->size);
     self->keyCount = 0;
 }
-*/
 
 // --- enumeration --------------------------------------------------
 

@@ -86,7 +86,8 @@ void PHash_insert_(PHash *self, PHashRecord *x) {
     PHash_at_put_(self, x->k, x->v);
 }
 
-void PHash_insertRecords(PHash *self, unsigned char *oldRecords, size_t oldSize) {
+void PHash_insertRecords(PHash *self, unsigned char *oldRecords,
+                         size_t oldSize) {
     int i;
 
     for (i = 0; i < oldSize; i++) {
@@ -109,13 +110,9 @@ void PHash_resizeTo_(PHash *self, size_t newSize) {
     io_free(oldRecords);
 }
 
-void PHash_grow(PHash *self) { 
-    PHash_resizeTo_(self, self->size * 2); 
-}
+void PHash_grow(PHash *self) { PHash_resizeTo_(self, self->size * 2); }
 
-void PHash_shrink(PHash *self) { 
-    PHash_resizeTo_(self, self->size / 2); 
-}
+void PHash_shrink(PHash *self) { PHash_resizeTo_(self, self->size / 2); }
 
 void PHash_removeKey_(PHash *self, void *k) {
     PHashRecord *r;
@@ -139,8 +136,9 @@ void PHash_removeKey_(PHash *self, void *k) {
     }
 }
 
-size_t PHash_size(PHash *self) {
-    return self->keyCount; // actually the keyCount
+size_t PHash_size(PHash *self) // actually the keyCount
+{
+    return self->keyCount;
 }
 
 // ----------------------------
@@ -149,99 +147,4 @@ size_t PHash_memorySize(PHash *self) {
     return sizeof(PHash) + self->size * sizeof(PHashRecord);
 }
 
-void PHash_compact(PHash *self) {
-}
-
-// previously inlined in IoObject_inlines
-
-PHashRecord *PHash_record1_(PHash *self, void *k) {
-    // intptr_t kk = IoSeq_rawUArray(((IoSeq *)k))->evenHash;
-    intptr_t kk = ((CollectorMarker *)k)->hash1;
-    size_t pos = kk & self->mask;
-    return Records_recordAt_(self->records, pos);
-}
-
-PHashRecord *PHash_record2_(PHash *self, void *k) {
-    // intptr_t kk = IoSeq_rawUArray(((IoSeq *)k))->oddHash;
-    intptr_t kk = ((CollectorMarker *)k)->hash2;
-    size_t pos = kk & self->mask;
-    return Records_recordAt_(self->records, pos);
-}
-
-void *PHash_at_(PHash *self, void *k) {
-    PHashRecord *r;
-
-    r = PHash_record1_(self, k);
-    if (k == r->k)
-        return r->v;
-
-    r = PHash_record2_(self, k);
-    if (k == r->k)
-        return r->v;
-
-    return 0x0;
-}
-
-unsigned int PHash_count(PHash *self) {
-    return (unsigned int)self->keyCount;
-}
-
-int PHashKey_hasKey_(PHash *self, void *key) {
-    return PHash_at_(self, key) != NULL;
-}
-
-void PHash_at_put_(PHash *self, void *k, void *v) {
-    PHashRecord *r;
-
-    r = PHash_record1_(self, k);
-
-    if (!r->k) {
-        r->k = k;
-        r->v = v;
-        self->keyCount++;
-        return;
-    }
-
-    if (r->k == k) {
-        r->v = v;
-        return;
-    }
-
-    r = PHash_record2_(self, k);
-
-    if (!r->k) {
-        r->k = k;
-        r->v = v;
-        self->keyCount++;
-        return;
-    }
-
-    if (r->k == k) {
-        r->v = v;
-        return;
-    }
-
-    {
-        PHashRecord x;
-        x.k = k;
-        x.v = v;
-        PHash_insert_(self, &x);
-    }
-}
-
-void PHash_shrinkIfNeeded(PHash *self) {
-    if (self->keyCount < self->size / 8) {
-        PHash_shrink(self);
-    }
-}
-
-void PHashRecord_swapWith_(PHashRecord *self, PHashRecord *other) {
-    PHashRecord tmp = *self;
-    *self = *other;
-    *other = tmp;
-}
-
-void PHash_clean(PHash *self) {
-    memset(self->records, 0, sizeof(PHashRecord) * self->size);
-    self->keyCount = 0;
-}
+void PHash_compact(PHash *self) {}

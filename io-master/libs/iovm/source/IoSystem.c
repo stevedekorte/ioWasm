@@ -112,6 +112,10 @@ IoObject *IoSystem_proto(void *state) {
         {"symbols", IoObject_symbols},
         {"setLobby", IoObject_setLobby},
         {"thisProcessPid", IoObject_thisProcessPid},
+
+#if defined(__EMSCRIPTEN__)
+        {"sendIoToJsMessage", IoObject_sendIoToJsMessage},
+#endif
         {NULL, NULL},
     };
 
@@ -528,3 +532,31 @@ IO_METHOD(IoObject, thisProcessPid) {
 /*doc System distribution
         Returns the Io distribution name as a string.
 */
+
+// -- emscripten messaging to JS ---
+
+#if defined(__EMSCRIPTEN__)
+
+#include <emscripten.h>
+
+EM_JS(void, sendIoToJs, (const char *s), {
+    try {
+        getGlobalThis().onIoToJsMessage(UTF8ToString(s));
+    } catch (e) {
+        console.log(e);
+        //alert(e);
+    }
+});
+
+IO_METHOD(IoObject, sendIoToJsMessage) {
+    /*doc System sendIoToJsMessage(aString)
+    Send a string message to 
+    */
+    IoSymbol *ioString = IoMessage_locals_symbolArgAt_(m, locals, 0);
+    //IoSeq *ioString = IoMessage_locals_seqArgAt_(m, locals, 0);
+    const char *s = CSTRING(ioString);
+    sendIoToJs(s);
+    return IONIL(self);
+}
+
+#endif

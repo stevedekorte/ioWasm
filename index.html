@@ -242,7 +242,7 @@
   </div>
 
   <div id="status" class="status">
-    Loading interpreter...
+    Loading Io compiled to WASM...
   </div>
 
   <div id="repl" class="repl">
@@ -270,23 +270,30 @@
   
     <div class="helpsection">
       <div style=""margin-bottom:0.5em;">
-    <input class="button" type="button" value="EVAL" onclick="Repl.shared().onInput()">
-    <select class="button" name="" id="SampleMenu" onchange="Repl.shared().onSampleMenu(this)">
-      <option value='"Hello world!"'>Hello World</option>
-      <option value='System platform .. " " .. System platformVersion'>System</option>
-      <option value='1 + 2'>Math</option>
-      <option value='b := 2 * 3
+        <input class="button" type="button" value="EVAL" title="Evaluate expression" onclick="Repl.shared().onInput()">
+        <select class="button" name="" id="SampleMenu" onchange="Repl.shared().onSampleMenu(this)" title="Code samples">
+          <option value='"Hello world!"'>Hello World</option>
+          <option value='System platform .. " " .. System platformVersion'>System</option>
+          <option value='1 + 2'>Math</option>
+          <option value='b := 2 * 3
 b'>Variables</option>
-      <option value='a := 2
+          <option value='a := 2
 if(a == 1, "a is one", "a is not one")'>Conditions</option>
-      <option value='List clone append(30, 10, 5, 20)'>Lists</option>
-      <option value='for(i, 1, 10, writeln(i, " "))'>For Loop</option>
-      <option value='List clone append(30, 10, 5, 20) foreach(i, v, writeln(i, ": ", v))'>Foreach Loop</option>
-      <option value='Lobby'>Lobby</option>
-      <option value='Lobby Protos Core'>Core Protos</option>
-      <option value='System sleep(2)'>Sleep</option>
-    </select>
+          <option value='List clone append(30, 10, 5, 20)'>Lists</option>
+          <option value='for(i, 1, 10, writeln(i, " "))'>For Loop</option>
+          <option value='List clone append(30, 10, 5, 20) foreach(i, v, writeln(i, ": ", v))'>Foreach Loop</option>
+          <option value='Lobby'>Lobby</option>
+          <option value='Lobby Protos Core'>Core Protos</option>
+          <option value='System sleep(2)'>Sleep</option>
+        </select>
+        <input class="button" type="button" value="SOURCE" title="Evaluate expression" onclick="s = 'https://github.com/stevedekorte/ioWasm'; window.open(s)">
+
+<!--
+        <input class="button" type="button" value="SAVE" title="Save system image" onclick="WasmState.shared().store()">
+        <input class="button" type="button" value="LOAD" title="Load system image" onclick="WasmState.shared().load()">
+-->
   </div>
+  <br>
   <table cellpadding="0" cellspacing="0" width="fit-content" style="border: 1px solid #444;" rules="none">
   <tbody> 
     <tr> 
@@ -305,8 +312,20 @@ if(a == 1, "a is one", "a is not one")'>Conditions</option>
       <td>TOGGLE HELP</td>
       <td>CONTROL + H</td>
     </tr>
+    <tr> 
+      <td>SAVE SYSTEM IMAGE</td>
+      <td>CONTROL + S</td>
+    </tr>
+    <tr> 
+      <td>LOAD SYSTEM IMAGE</td>
+      <td>CONTROL + L</td>
+    </tr>
   </tbody>
   </table>
+  <!--
+  <br>
+  <a href="https://github.com/stevedekorte/ioWasm">ioWasm source on github</a>
+-->
   </div>
   <br><br><br>
   </div>

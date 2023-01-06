@@ -12,13 +12,35 @@ if (!window.chrome) {
 */
 
 
+getGlobalThis().onIoToJsMessage = function (jsonString) {
+  console.log("JS: onIoToJsMessage: ", JSON.parse(jsonString))
+};
+
 (class Repl extends Base {
 
+  isOnMobileBrowser () {
+    return (navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i) 
+      || navigator.userAgent.match(/iPad/i) 
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i));
+  }
+
   static launch () {
+    Repl.shared().checkForMobile()
+
     const w = WasmLoader.shared()
     w.setPath("./iovm.js")
     w.setDelegate(Repl.shared())
     w.load()
+  }
+
+  checkForMobile () {
+    if (this.isOnMobileBrowser()) {
+      this.statusElement().innerHTML += " (may not work on mobile browsers)"
+    }
   }
 
   initPrototype () {
@@ -32,11 +54,8 @@ if (!window.chrome) {
       super.init()
       this.setHistory(ReplHistory.clone())
       this.inputElement().addEventListener("keydown", (event) => { this.onKeyDown(event); })
-      this.inputElement().addEventListener("keyup", (event) => { this.onKeyUp(event); })
-      this.history().addEntry("")
-
-      this.inputElement().addEventListener("input", (event) => { this.onInputChange(event); })
-
+      this.inputElement().addEventListener("keyup",   (event) => { this.onKeyUp(event); })
+      this.inputElement().addEventListener("input",   (event) => { this.onInputChange(event); })
   }
 
   // --- WasmLoader protocol ---
@@ -47,8 +66,12 @@ if (!window.chrome) {
 
   onStandardError () {
     const s = Array.prototype.slice.call(arguments).join(' ');
-    this.addOutput("STDERR: " + s)
-    this.lastErrorElement().innerHTML += s
+    if (this.lastErrorElement()) {
+      this.addOutput("STDERR: " + s)
+      this.lastErrorElement().innerHTML += s
+    } else {
+      console.log("STDERR: " + s)
+    }
   }
 
   onStandardOutput (s) {
@@ -59,7 +82,7 @@ if (!window.chrome) {
 
   onKeyDown (event) {
     const k = event.keyCode 
-    console.log("down  ", k)
+    console.log("keydown  code:", k)
     const returnKeyCode = 13;
     const upArrowKeyCode = 38;
     const downArrowKeyCode = 40;
@@ -190,6 +213,8 @@ if (!window.chrome) {
   }
 
   run () {
+    this.statusElement().innerHTML = "Loaded WASM..."
+
     this.setIoState(this.newIoState())
     this.statusElement().innerHTML = ""
     //this.statusElement().display = "none"
@@ -227,7 +252,7 @@ if (!window.chrome) {
     this.addResultElement(jsString)
     this.inputSectionElement().style.opacity = 0.4
     this.lastReplPairElement().style.opacity = 0.4
-    console.log("this.lastReplPairElement().style.opacity = ", this.lastReplPairElement().style.opacity)
+    //console.log("this.lastReplPairElement().style.opacity = ", this.lastReplPairElement().style.opacity)
     // use a timeout so our UI changes can apply before eval begins
     setTimeout(() => { 
       this.justEval(jsString) 
@@ -236,7 +261,8 @@ if (!window.chrome) {
 
   justEval (jsString) {
     try {
-      const runString = "(" + jsString + ") println"
+      //const runString = "(" + jsString + ") println"
+      const runString = jsString
       console.log("eval: ", runString)
       this.setIsEvaling(true)
       const ioState = this.ioState()
@@ -244,7 +270,10 @@ if (!window.chrome) {
       const ioLobby = wasm._IoState_lobby(ioState);    
       const cString = wasm.allocateUTF8(runString); 
       const cLabel = wasm.allocateUTF8("repl"); 
-      const result = wasm._IoState_on_doCString_withLabel_(ioState, ioLobby, cString, cLabel);
+      wasm._IoState_on_doCString_withLabel_andPrintResult(ioState, ioLobby, cString, cLabel);
+
+      //wasm._IoObject_print(result);
+
       wasm._free(cString);
       wasm._free(cLabel);
       this.setIsEvaling(false)
@@ -268,7 +297,11 @@ if (!window.chrome) {
   }
 
   addOutput (text) {
-    this.lastResultElement().innerHTML += text + '<br>';
+    if (this.lastResultElement()) {
+      this.lastResultElement().innerHTML += text + '<br>';
+    } else {
+      console.log(text)
+    }
   }
 
   addResultElement (text) {    

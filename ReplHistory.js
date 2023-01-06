@@ -12,6 +12,7 @@
   init () {
       super.init()
       this.setEntries([])
+      this.addEntry("")
   }
 
   // --- WasmLoader protocol ---

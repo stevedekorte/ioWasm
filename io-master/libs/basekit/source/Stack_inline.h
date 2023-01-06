@@ -12,7 +12,6 @@
 #include "Common_inline.h"
 #ifdef IO_DECLARE_INLINES
 
-/*
 IOINLINE void Stack_do_(const Stack *self, StackDoCallback *callback) {
     void **itemP = self->top;
     intptr_t mark = self->lastMark;
@@ -128,7 +127,6 @@ IOINLINE void *Stack_top(const Stack *self) { return *(self->top); }
 IOINLINE void *Stack_at_(const Stack *self, int i) {
     return self->items[i + 1];
 }
-*/
 
 #undef IO_IN_C_FILE
 #endif

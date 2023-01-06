@@ -209,47 +209,6 @@ IOVM_API int IoState_exitResult(IoState *self);
 #include "IoState_exceptions.h"
 #include "IoState_inline.h"
 
-// previously inlined ------------------------------
-
-IOVM_API IoObject *IOTRUE(IoObject *self);
-IOVM_API int ISTRUE(IoObject *self);
-IOVM_API IoObject *IOFALSE(IoObject *self);
-IOVM_API int ISFALSE(IoObject *self);
-IOVM_API IoObject *IOBOOL(IoObject *self, int b);
-
-// collector
-
-IOVM_API IoObject *IoState_retain_(IoState *self, IoObject *v);
-IOVM_API void IoState_stopRetaining_(IoState *self, IoObject *v);
-IOVM_API void *IoState_unreferencedStackRetain_(IoState *self, IoObject *v);
-IOVM_API void *IoState_stackRetain_(IoState *self, IoObject *v);
-IOVM_API void IoState_addValue_(IoState *self, IoObject *v);
-IOVM_API void IoState_addValueIfNecessary_(IoState *self, IoObject *v);
-IOVM_API void IoState_pushCollectorPause(IoState *self);
-IOVM_API void IoState_popCollectorPause(IoState *self);
-IOVM_API void IoState_clearRetainStack(IoState *self);
-IOVM_API uintptr_t IoState_pushRetainPool(void *self);
-IOVM_API void IoState_clearTopPool(void *self);
-IOVM_API void IoState_popRetainPool(void *self);
-IOVM_API void IoState_popRetainPool_(void *self, uintptr_t mark);
-IOVM_API void IoState_popRetainPoolExceptFor_(void *state, void *obj);
-
-// message args
-
-#define IOMESSAGEDATA(self) ((IoMessageData *)IoObject_dataPointer(self))
-
-IOVM_API IoObject *IoMessage_locals_quickValueArgAt_(IoMessage *self, IoObject *locals, int n);
-IOVM_API IoObject *IoMessage_locals_valueArgAt_(IoMessage *self, IoObject *locals, int n);
-IOVM_API IoObject *IoMessage_locals_firstStringArg(IoMessage *self, IoObject *locals);
-IOVM_API void IoState_break(IoState *self, IoObject *v);
-IOVM_API void IoState_continue(IoState *self);
-IOVM_API void IoState_eol(IoState *self);
-IOVM_API void IoState_return(IoState *self, IoObject *v);
-IOVM_API void IoState_resetStopStatus(IoState *self);
-IOVM_API int IoState_handleStatus(IoState *self);
-IOVM_API IoObject *IoState_stopStatusObject(IoState *self, int stopStatus);
-IOVM_API int IoState_stopStatusNumber(IoState *self, IoObject *obj);
-
 #ifdef __cplusplus
 }
 #endif

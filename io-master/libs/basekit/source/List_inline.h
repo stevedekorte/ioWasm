@@ -69,9 +69,6 @@ The List is not responsible for io_freeing its elements.
         }                                                                      \
     }
 
-// previously inlined -------------------------------------------------
-
-/*
 IOINLINE size_t List_size(const List *self) { return self->size; }
 
 IOINLINE void List_ifNeededSizeTo_(List *self, size_t newSize) {
@@ -86,7 +83,7 @@ IOINLINE void *List_rawAt_(List *self, size_t index) {
 
 IOINLINE void *List_at_(const List *self, ssize_t index) {
 
-    // Negative indexing is also supported. 
+    /* Negative indexing is also supported. */
     if (index < 0) {
         index += self->size;
     }
@@ -285,7 +282,7 @@ IOINLINE void *List_top(const List *self) {
     return self->items[self->size - 1];
 }
 
-// --- perform -------------------------------------------------- 
+/* --- perform -------------------------------------------------- */
 
 IOINLINE int List_removeTrueFor_(List *self, ListCollectCallback *callback) {
     size_t getIndex = 0;
@@ -332,7 +329,6 @@ IOINLINE void *List_first(const List *self) { return List_at_(self, 0); }
 IOINLINE void *List_last(List *self) {
     return List_at_(self, List_size(self) - 1);
 }
-*/
 
 #undef IO_IN_C_FILE
 #endif

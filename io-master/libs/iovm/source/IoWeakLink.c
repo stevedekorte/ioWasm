@@ -25,7 +25,8 @@ IoTag *IoWeakLink_newTag(void *state) {
     IoTag_state_(tag, state);
     IoTag_cloneFunc_(tag, (IoTagCloneFunc *)IoWeakLink_rawClone);
     IoTag_freeFunc_(tag, (IoTagFreeFunc *)IoWeakLink_free);
-    IoTag_notificationFunc_(tag, (IoTagNotificationFunc *)IoWeakLink_notification);
+    IoTag_notificationFunc_(tag,
+                            (IoTagNotificationFunc *)IoWeakLink_notification);
     // IoTag_writeToStreamFunc_(tag, (IoTagWriteToStreamFunc
     // *)IoWeakLink_writeToStream_); IoTag_readFromStreamFunc_(tag,
     // (IoTagReadFromStreamFunc *)IoWeakLink_readFromStream_);
@@ -102,7 +103,8 @@ IoObject *IoWeakLink_newWithValue_(void *state, IoObject *v) {
     return self;
 }
 
-void IoWeakLink_notification(IoWeakLink *self, void *notification) // called when link is freed
+void IoWeakLink_notification(IoWeakLink *self,
+                             void *notification) // called when link is freed
 {
     DATA(self)->link = NULL;
     // IoMessage_locals_performOn_(IOSTATE->collectedLinkMessage, self, self);

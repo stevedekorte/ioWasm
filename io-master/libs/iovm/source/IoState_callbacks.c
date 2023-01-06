@@ -6,7 +6,8 @@
 #include "IoNumber.h"
 #include "IoWeakLink.h"
 
-void IoState_setBindingsInitCallback(IoState *self, IoStateBindingsInitCallback *callback) {
+void IoState_setBindingsInitCallback(IoState *self,
+                                     IoStateBindingsInitCallback *callback) {
     self->bindingsInitCallback = callback;
 }
 
@@ -58,14 +59,14 @@ void IoState_justPrintln_(IoState *self) {
 
 // exception ---------------------------
 
-void IoState_exceptionCallback_(IoState *self, IoStateExceptionCallback *callback) {
+void IoState_exceptionCallback_(IoState *self,
+                                IoStateExceptionCallback *callback) {
     self->exceptionCallback = callback;
 }
 
 void IoState_exception_(IoState *self, IoObject *coroutine) {
-    IoStateExceptionCallback *fp = self->exceptionCallback;
-    if (fp) {
-        fp(self->callbackContext, coroutine);
+    if (self->exceptionCallback) {
+        self->exceptionCallback(self->callbackContext, coroutine);
     } else {
         IoCoroutine_rawPrintBackTrace(coroutine);
     }

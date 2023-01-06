@@ -80,10 +80,10 @@ if (!getGlobalThis().assert) {
   }
 
   onLoadMemory (data) {
-    console.log(this.type() + ".onLoadMemory ", data)
+    //console.log(this.type() + ".onLoadMemory ", data)
     const wasmModule = this.wasmModule()
     //assert(data.length === wasmModule.HEAP8.length)
-    wasmModule.HEAP8.length = data.length
+    //wasmModule.HEAP8.length = data.length
     wasmModule.HEAP8.set(data)
   }
 

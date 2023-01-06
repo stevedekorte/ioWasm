@@ -151,25 +151,6 @@ COLLECTOR_API double Collector_timeUsed(Collector *self);
 
 #include "Collector_inline.h"
 
-// previously inlined ----
-
-COLLECTOR_API int Collector_markerIsWhite_(Collector *self, CollectorMarker *m);
-COLLECTOR_API int Collector_markerIsGray_(Collector *self, CollectorMarker *m);
-COLLECTOR_API int Collector_markerIsBlack_(Collector *self, CollectorMarker *m);
-
-// changing marker colors -------------------
-
-COLLECTOR_API void Collector_makeFree_(Collector *self, CollectorMarker *v);
-COLLECTOR_API void Collector_makeWhite_(Collector *self, CollectorMarker *v);
-COLLECTOR_API void Collector_makeGray_(Collector *self, CollectorMarker *v);
-COLLECTOR_API void Collector_makeBlack_(Collector *self, CollectorMarker *v);
-COLLECTOR_API void Collector_makeGrayIfWhite_(Collector *self, void *v);
-
-#ifndef COLLECTOR_USE_NONINCREMENTAL_MARK_SWEEP
-COLLECTOR_API void *Collector_value_addingRefTo_(Collector *self, void *v, void *ref);
-#endif
-
-
 #ifdef __cplusplus
 }
 #endif

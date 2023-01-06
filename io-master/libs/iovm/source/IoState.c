@@ -32,7 +32,6 @@
 #include "IoSandbox.h"
 #include "IoDirectory.h"
 #include "IoProfiler.h"
-#include "IoReadLine.h"
 //#include "IoEditLine.h"
 
 #include <stdlib.h>
@@ -194,7 +193,6 @@ void IoState_new_atAddress(void *address) {
         IoObject_setSlot_to_(core, SIOSYMBOL("WeakLink"),
                              IoWeakLink_proto(self));
         IoObject_setSlot_to_(core, SIOSYMBOL("Sandbox"), IoSandbox_proto(self));
-        IoObject_setSlot_to_(core, SIOSYMBOL("ReadLine"), IoReadLine_proto(self));
         // IoObject_setSlot_to_(core, SIOSYMBOL("EditLine"),
         // IoEditLine_proto(self));
 
@@ -354,16 +352,19 @@ void IoState_setupCachedMessages(IoState *self) {
     self->mainMessage = IoMessage_newWithName_(self, SIOSYMBOL("main"));
     IoState_retain_(self, self->mainMessage);
 
-    self->opShuffleMessage = IoMessage_newWithName_(self, self->opShuffleSymbol);
+    self->opShuffleMessage =
+        IoMessage_newWithName_(self, self->opShuffleSymbol);
     IoState_retain_(self, self->opShuffleMessage);
 
     self->printMessage = IoMessage_newWithName_(self, SIOSYMBOL("print"));
     IoState_retain_(self, self->printMessage);
 
-    self->referenceIdForObjectMessage = IoMessage_newWithName_(self, SIOSYMBOL("referenceIdForObject"));
+    self->referenceIdForObjectMessage =
+        IoMessage_newWithName_(self, SIOSYMBOL("referenceIdForObject"));
     IoState_retain_(self, self->referenceIdForObjectMessage);
 
-    self->objectForReferenceIdMessage = IoMessage_newWithName_(self, SIOSYMBOL("objectForReferenceId"));
+    self->objectForReferenceIdMessage =
+        IoMessage_newWithName_(self, SIOSYMBOL("objectForReferenceId"));
     IoState_retain_(self, self->objectForReferenceIdMessage);
 
     self->runMessage = IoMessage_newWithName_(self, SIOSYMBOL("run"));
@@ -375,10 +376,12 @@ void IoState_setupCachedMessages(IoState *self) {
     self->yieldMessage = IoMessage_newWithName_(self, SIOSYMBOL("yield"));
     IoState_retain_(self, self->yieldMessage);
 
-    self->didFinishMessage = IoMessage_newWithName_(self, SIOSYMBOL("didFinish"));
+    self->didFinishMessage =
+        IoMessage_newWithName_(self, SIOSYMBOL("didFinish"));
     IoState_retain_(self, self->didFinishMessage);
 
-    self->asBooleanMessage = IoMessage_newWithName_(self, SIOSYMBOL("asBoolean"));
+    self->asBooleanMessage =
+        IoMessage_newWithName_(self, SIOSYMBOL("asBoolean"));
     IoState_retain_(self, self->asBooleanMessage);
 }
 
@@ -418,11 +421,13 @@ Error: attempt to add the same proto twice");
 }
 */
 
-void IoState_registerProtoWithFunc_(IoState *self, IoObject *proto, const char *v) {
+void IoState_registerProtoWithFunc_(IoState *self, IoObject *proto,
+                                    const char *v) {
     IoState_registerProtoWithId_(self, proto, v);
 }
 
-IOVM_API void IoState_registerProtoWithId_(IoState *self, IoObject *proto, const char *v) {
+IOVM_API void IoState_registerProtoWithId_(IoState *self, IoObject *proto,
+                                           const char *v) {
     if (PointerHash_at_(self->primitives, (void *)v)) {
         printf("Error registering proto: %s\n", IoObject_name(proto));
         IoState_fatalError_(self, "IoState_registerProtoWithFunc_() Error: "
@@ -452,7 +457,8 @@ List *IoState_tagList(IoState *self) // caller must io_free returned List
 void IoState_done(IoState *self) {
     // this should only be called from the main coro from outside of Io
 
-    List *tags = IoState_tagList(self); // need to get the tags before we io_free the protos
+    List *tags = IoState_tagList(
+        self); // need to get the tags before we io_free the protos
 
     self->maxRecycledObjects = 0;
 
@@ -466,7 +472,9 @@ void IoState_done(IoState *self) {
     PointerHash_free(self->primitives);
     CHash_free(self->symbols);
 
-    LIST_DO_(self->recycledObjects, IoObject_dealloc); // this does not work now that objects and marks are separate
+    LIST_DO_(self->recycledObjects,
+             IoObject_dealloc); // this does not work now that objects and marks
+                                // are separate
     List_free(self->recycledObjects);
     List_free(self->cachedNumbers);
 
@@ -479,17 +487,11 @@ void IoState_free(IoState *self) {
     io_free(self);
 }
 
-IoObject *IoState_lobby(IoState *self) { 
-    return self->lobby; 
-}
+IoObject *IoState_lobby(IoState *self) { return self->lobby; }
 
-void IoState_setLobby_(IoState *self, IoObject *obj) { 
-    self->lobby = obj; 
-}
+void IoState_setLobby_(IoState *self, IoObject *obj) { self->lobby = obj; }
 
-void MissingProtoError(void) { 
-    printf("missing proto\n"); 
-}
+void MissingProtoError(void) { printf("missing proto\n"); }
 
 IoObject *IoState_protoWithId_(IoState *self, const char *v) {
     IoObject *proto = PointerHash_at_(self->primitives, (void *)v);
@@ -531,7 +533,8 @@ IoObject *IoState_objectWithPid_(IoState *self, PID_TYPE pid) {
 
 // doString -------------------------------------------------------
 
-IoObject *IoState_rawOn_doCString_withLabel_(IoState *self, IoObject *target, const char *s, const char *label) {
+IoObject *IoState_rawOn_doCString_withLabel_(IoState *self, IoObject *target,
+                                             const char *s, const char *label) {
     IoMessage *m = IoMessage_newFromText_label_(self, s, label);
     return IoMessage_locals_performOn_(m, target, target);
 }
@@ -564,11 +567,9 @@ void IoState_rawPrompt(IoState *self) {
 }
 
 void IoState_runCLI(IoState *self) {
-    printf("run CLI");
     IoObject *result = IoState_on_doCString_withLabel_(
         self, self->lobby, "CLI run", "IoState_runCLI()");
     IoObject *e = IoCoroutine_rawException(self->currentCoroutine);
-    printf("exited CLI with exception %p", (void *)e);
 
     if (e != self->ioNil) {
         self->exitResult = -1;
@@ -577,247 +578,4 @@ void IoState_runCLI(IoState *self) {
     }
 }
 
-IOVM_API int IoState_exitResult(IoState *self) { 
-    return self->exitResult; 
-}
-
-// previously inlined ----------------------------
-
-IOVM_API IoObject *IOTRUE(IoObject *self) { 
-    return IOSTATE->ioTrue; 
-}
-
-IOVM_API int ISTRUE(IoObject *self) {
-    return self != IOSTATE->ioNil && self != IOSTATE->ioFalse;
-}
-
-IOVM_API IoObject *IOFALSE(IoObject *self) { 
-    return IOSTATE->ioFalse; 
-}
-
-IOVM_API int ISFALSE(IoObject *self) {
-    return self == IOSTATE->ioNil || self == IOSTATE->ioFalse;
-}
-
-IOVM_API IoObject *IOBOOL(IoObject *self, int b) {
-    return b ? IOTRUE(self) : IOFALSE(self);
-}
-
-// collector --------------------------------------------------------
-
-IOVM_API IoObject *IoState_retain_(IoState *self, IoObject *v) {
-    IoObject_isReferenced_(v, 1);
-    Collector_retain_(self->collector, v);
-    return v;
-}
-
-IOVM_API void IoState_stopRetaining_(IoState *self, IoObject *v) {
-    Collector_stopRetaining_(self->collector, v);
-}
-
-IOVM_API void *IoState_unreferencedStackRetain_(IoState *self, IoObject *v) {
-    if (self->currentCoroutine) {
-        Collector_value_addingRefTo_(self->collector, self->currentCoroutine, v);
-    }
-
-    Stack_push_(self->currentIoStack, v);
-    return v;
-}
-
-IOVM_API void *IoState_stackRetain_(IoState *self, IoObject *v) {
-    IoObject_isReferenced_(v, 1);
-    IoState_unreferencedStackRetain_(self, v);
-    return v;
-}
-
-IOVM_API void IoState_addValue_(IoState *self, IoObject *v) {
-    Collector_addValue_(self->collector, v);
-    IoState_unreferencedStackRetain_(self, v);
-}
-
-IOVM_API void IoState_addValueIfNecessary_(IoState *self, IoObject *v) {
-    if (v->prev) {
-        Collector_addValue_(self->collector, v);
-    }
-    IoState_unreferencedStackRetain_(self, v);
-}
-
-IOVM_API void IoState_pushCollectorPause(IoState *self) {
-    Collector_pushPause(self->collector);
-}
-
-IOVM_API void IoState_popCollectorPause(IoState *self) {
-    Collector_popPause(self->collector);
-}
-
-IOVM_API void IoState_clearRetainStack(IoState *self) {
-    Stack_clear(((IoState *)self)->currentIoStack);
-}
-
-IOVM_API uintptr_t IoState_pushRetainPool(void *self) {
-    uintptr_t m = Stack_pushMarkPoint(((IoState *)self)->currentIoStack);
-    return m;
-}
-
-IOVM_API void IoState_clearTopPool(void *self) {
-    Stack *stack = ((IoState *)self)->currentIoStack;
-    // Stack_popMark(stack);
-    // Stack_pushMark(stack);
-    Stack_clearTop(stack);
-}
-
-IOVM_API void IoState_popRetainPool(void *self) {
-    Stack *stack = ((IoState *)self)->currentIoStack;
-    Stack_popMark(stack);
-}
-
-IOVM_API void IoState_popRetainPool_(void *self, uintptr_t mark) {
-    Stack *stack = ((IoState *)self)->currentIoStack;
-    Stack_popMarkPoint_(stack, mark);
-}
-
-IOVM_API void IoState_popRetainPoolExceptFor_(void *state, void *obj) {
-    IoState *self = (IoState *)state;
-#ifdef STACK_POP_CALLBACK
-    IoObject_isReferenced_(((IoObject *)obj), 1);
-#endif
-    IoState_popRetainPool(self);
-    IoState_stackRetain_(self, (IoObject *)obj);
-}
-
-// message args --------------------------------------------------------
-
-IOVM_API IoObject *IoMessage_locals_quickValueArgAt_(IoMessage *self, IoObject *locals, int n) {
-    IoMessage *m = (IoMessage *)List_at_(IOMESSAGEDATA(self)->args, n);
-
-    if (m) {
-        IoMessageData *md = IOMESSAGEDATA(m);
-        IoObject *v = md->cachedResult;
-
-        if (v && !md->next) {
-            return v;
-        }
-
-        return IoMessage_locals_performOn_(m, locals, locals);
-    }
-
-    return IOSTATE->ioNil;
-}
-
-IOVM_API IoObject *IoMessage_locals_valueArgAt_(IoMessage *self, IoObject *locals, int n) {
-    return IoMessage_locals_quickValueArgAt_(self, locals, n);
-//  List *args = IOMESSAGEDATA(self)->args;
-//  IoMessage *m = (IoMessage *)List_at_(args, n);
-//
-//    if (m)
-//    {
-//            return IoMessage_locals_performOn_(m, locals, locals);
-//    }
-//
-//   return IOSTATE->ioNil;
-}
-
-IOVM_API IoObject *IoMessage_locals_firstStringArg(IoMessage *self, IoObject *locals) {
-    // special case this, since it's used for setSlot()
-    List *args = IOMESSAGEDATA(self)->args;
-
-    if (List_size(args)) {
-        IoMessage *m = (IoMessage *)List_rawAt_(args, 0);
-
-        if (m) {
-            IoMessageData *md = IOMESSAGEDATA(m);
-            IoObject *v = md->cachedResult;
-
-            // avoid calling IoMessage_locals, if possible
-
-            if (v && IoObject_isSymbol(v) && (md->next == NULL)) {
-                return v;
-            }
-        }
-    }
-
-    return IoMessage_locals_symbolArgAt_(self, locals, 0);
-}
-
-// --------------------------
-
-IOVM_API void IoState_break(IoState *self, IoObject *v) {
-    self->stopStatus = MESSAGE_STOP_STATUS_BREAK;
-    self->returnValue = v;
-}
-
-IOVM_API void IoState_continue(IoState *self) {
-    self->stopStatus = MESSAGE_STOP_STATUS_CONTINUE;
-}
-
-IOVM_API void IoState_eol(IoState *self) {
-    self->stopStatus = MESSAGE_STOP_STATUS_EOL;
-}
-
-IOVM_API void IoState_return(IoState *self, IoObject *v) {
-    self->stopStatus = MESSAGE_STOP_STATUS_RETURN;
-    self->returnValue = v;
-}
-
-IOVM_API void IoState_resetStopStatus(IoState *self) {
-    self->stopStatus = MESSAGE_STOP_STATUS_NORMAL;
-}
-
-IOVM_API int IoState_handleStatus(IoState *self) {
-    switch (self->stopStatus) {
-    case MESSAGE_STOP_STATUS_RETURN:
-        return 1;
-
-    case MESSAGE_STOP_STATUS_BREAK:
-        IoState_resetStopStatus(self);
-        return 1;
-
-    case MESSAGE_STOP_STATUS_CONTINUE:
-        IoState_resetStopStatus(self);
-        return 0;
-
-    default:
-        return 0;
-    }
-}
-
-IOVM_API IoObject *IoState_stopStatusObject(IoState *self, int stopStatus) {
-    switch (stopStatus) {
-    case MESSAGE_STOP_STATUS_NORMAL:
-        return self->ioNormal;
-
-    case MESSAGE_STOP_STATUS_BREAK:
-        return self->ioBreak;
-
-    case MESSAGE_STOP_STATUS_CONTINUE:
-        return self->ioContinue;
-
-    case MESSAGE_STOP_STATUS_RETURN:
-        return self->ioReturn;
-
-    case MESSAGE_STOP_STATUS_EOL:
-        return self->ioEol;
-
-    default:
-        return self->ioNormal;
-    }
-}
-
-IOVM_API int IoState_stopStatusNumber(IoState *self, IoObject *obj) {
-    if (obj == self->ioNormal)
-        return MESSAGE_STOP_STATUS_NORMAL;
-
-    if (obj == self->ioBreak)
-        return MESSAGE_STOP_STATUS_BREAK;
-
-    if (obj == self->ioContinue)
-        return MESSAGE_STOP_STATUS_CONTINUE;
-
-    if (obj == self->ioReturn)
-        return MESSAGE_STOP_STATUS_RETURN;
-
-    if (obj == self->ioEol)
-        return MESSAGE_STOP_STATUS_EOL;
-
-    return MESSAGE_STOP_STATUS_NORMAL;
-}
+IOVM_API int IoState_exitResult(IoState *self) { return self->exitResult; }

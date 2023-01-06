@@ -21,11 +21,12 @@ static const char *protoId = "Coroutine";
 
 #define DATA(self) ((IoCoroutineData *)IoObject_dataPointer(self))
 
-IoCoroutine *IoMessage_locals_coroutineArgAt_(IoMessage *self, void *locals, int n) {
+IoCoroutine *IoMessage_locals_coroutineArgAt_(IoMessage *self, void *locals,
+                                              int n) {
     IoObject *v = IoMessage_locals_valueArgAt_(self, (IoObject *)locals, n);
-    if (!ISCOROUTINE(v)) {
-        IoMessage_locals_numberArgAt_errorForType_(self, (IoObject *)locals, n,"Coroutine");
-    }
+    if (!ISCOROUTINE(v))
+        IoMessage_locals_numberArgAt_errorForType_(self, (IoObject *)locals, n,
+                                                   "Coroutine");
     return v;
 }
 
@@ -108,9 +109,7 @@ void IoCoroutine_mark(IoCoroutine *self) {
 
 // raw
 
-Stack *IoCoroutine_rawIoStack(IoCoroutine *self) { 
-    return DATA(self)->ioStack; 
-}
+Stack *IoCoroutine_rawIoStack(IoCoroutine *self) { return DATA(self)->ioStack; }
 
 void IoCoroutine_rawShow(IoCoroutine *self) {
     Stack_do_(DATA(self)->ioStack, (StackDoCallback *)IoObject_show);
@@ -254,7 +253,9 @@ IO_METHOD(IoCoroutine, setRecentInChain) {
     */
 
     IoObject *v = IoMessage_locals_valueArgAt_(m, locals, 0);
+
     IoCoroutine_rawSetRecentInChain_(self, v);
+
     return self;
 }
 
@@ -265,26 +266,25 @@ IoObject *IoCoroutine_rawRecentInChain(IoCoroutine *self) {
 // result
 
 void IoCoroutine_rawSetResult_(IoCoroutine *self, IoObject *v) {
-    IoObject_setSlot_to_(self, IOSTATE->resultSymbol, v);
+    IoObject_setSlot_to_(self, IOSYMBOL("result"), v);
 }
 
 IoObject *IoCoroutine_rawResult(IoCoroutine *self) {
-    return IoObject_getSlot_(self, IOSTATE->resultSymbol);
+    return IoObject_getSlot_(self, IOSYMBOL("result"));
 }
 
 // exception
 
 void IoCoroutine_rawRemoveException(IoCoroutine *self) {
-    IoObject_removeSlot_(self, IOSTATE->exceptionSymbol);
+    IoObject_removeSlot_(self, IOSYMBOL("exception"));
 }
 
 void IoCoroutine_rawSetException_(IoCoroutine *self, IoObject *v) {
-    IoObject_setSlot_to_(self, IOSTATE->exceptionSymbol, v);
+    IoObject_setSlot_to_(self, IOSYMBOL("exception"), v);
 }
 
 IoObject *IoCoroutine_rawException(IoCoroutine *self) {
-    return IoObject_getSlot_(self, IOSTATE->exceptionSymbol);
-    //return IoObject_getSlot_(self, IOSYMBOL("exception"));
+    return IoObject_getSlot_(self, IOSYMBOL("exception"));
 }
 
 // ioStack
@@ -420,8 +420,10 @@ IO_METHOD(IoCoroutine, run) {
     return IoCoroutine_rawResult(self);
 }
 
-void IoCoroutine_try(IoCoroutine *self, IoObject *target, IoObject *locals, IoMessage *message) {
-    IoCoroutine *currentCoro = (IoCoroutine *)IoState_currentCoroutine((IoState *)IOSTATE);
+void IoCoroutine_try(IoCoroutine *self, IoObject *target, IoObject *locals,
+                     IoMessage *message) {
+    IoCoroutine *currentCoro =
+        (IoCoroutine *)IoState_currentCoroutine((IoState *)IOSTATE);
     IoCoroutine_rawSetRunTarget_(self, target);
     IoCoroutine_rawSetRunLocals_(self, locals);
     IoCoroutine_rawSetRunMessage_(self, message);
@@ -429,13 +431,15 @@ void IoCoroutine_try(IoCoroutine *self, IoObject *target, IoObject *locals, IoMe
     IoCoroutine_rawRun(self);
 }
 
-IoCoroutine *IoCoroutine_newWithTry(void *state, IoObject *target, IoObject *locals, IoMessage *message) {
+IoCoroutine *IoCoroutine_newWithTry(void *state, IoObject *target,
+                                    IoObject *locals, IoMessage *message) {
     IoCoroutine *self = IoCoroutine_new(state);
     IoCoroutine_try(self, target, locals, message);
     return self;
 }
 
-void IoCoroutine_raiseError(IoCoroutine *self, IoSymbol *description, IoMessage *m) {
+void IoCoroutine_raiseError(IoCoroutine *self, IoSymbol *description,
+                            IoMessage *m) {
     IoObject *e = IoObject_rawGetSlot_(self, IOSYMBOL("Exception"));
 
     if (e) {
@@ -551,7 +555,8 @@ IoObject *IoObject_performWithDebugger(IoCoroutine *self, IoObject *locals,
         IoObject *debugger = state->debugger; // stack retain it?
 
         if (debugger) {
-            IoObject_setSlot_to_(debugger, IOSYMBOL("messageCoroutine"), currentCoroutine);
+            IoObject_setSlot_to_(debugger, IOSYMBOL("messageCoroutine"),
+                                 currentCoroutine);
             IoObject_setSlot_to_(debugger, IOSYMBOL("messageSelf"), self);
             IoObject_setSlot_to_(debugger, IOSYMBOL("messageLocals"), locals);
             IoObject_setSlot_to_(debugger, IOSYMBOL("message"), m);

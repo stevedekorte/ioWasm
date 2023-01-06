@@ -28,9 +28,11 @@ typedef struct {
 
 BStreamTag BStreamTag_FromUnsignedChar(unsigned char c);
 unsigned char BStreamTag_asUnsignedChar(BStreamTag *self);
-BStreamTag BStreamTag_TagArray_type_byteCount_(unsigned int a, unsigned int t, unsigned int b);
+BStreamTag BStreamTag_TagArray_type_byteCount_(unsigned int a, unsigned int t,
+                                               unsigned int b);
 int BStreamTag_isEqual_(BStreamTag *self, BStreamTag *other);
 void BStreamTag_print(BStreamTag *self);
+
 char *BStreamTag_typeName(BStreamTag *self);
 
 #ifdef __cplusplus
