@@ -5,6 +5,7 @@
         "random": "c",
         "iosandbox.h": "c",
         "ioreadline.h": "c",
-        "phash_struct.h": "c"
+        "phash_struct.h": "c",
+        "ioobject.h": "c"
     }
 }
