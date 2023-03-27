@@ -14,7 +14,7 @@ class Boot extends Object {
       "WasmState.js",
       "ReplHistory.js",
       "Repl.js"
-    ]
+    ] 
   }
 
   start () {
